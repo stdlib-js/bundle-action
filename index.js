@@ -19,12 +19,15 @@
 // MODULES //
 
 const core = require( '@actions/core' );
+const github = require( '@actions/github' );
 const { rollup } = require( 'rollup' );
 const resolve = require( 'rollup-plugin-url-resolve' );
 const { terser } = require( 'rollup-plugin-terser' );
 
 
 // VARIABLES //
+
+console.log( github.context.repo );
 
 const pkg = core.getInput( 'pkg' );
 const input = '__es_bundle__.js';
