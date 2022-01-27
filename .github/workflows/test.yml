@@ -34,4 +34,4 @@ jobs:
       - name: Bundle `@stdlib/assert-is-nan`
         uses: ./
         with:
-          pkg: @stdlib/assert-is-nan
+          pkg: "@stdlib/assert-is-nan"
