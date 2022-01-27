@@ -27,11 +27,14 @@ const { terser } = require( 'rollup-plugin-terser' );
 
 // VARIABLES //
 
-console.log( github.context.repo );
-
-const pkg = core.getInput( 'pkg' );
+let pkg = core.getInput( 'pkg' );
+if ( !pkg ) {
+	// Case: No package specified, so use the package from the current repository.
+	pkg = '@stdlib/' + github.context.repo.repo;
+}
 const input = '__es_bundle__.js';
-const src = `export * from 'https://cdn.skypack.dev/${pkg}'
+const url = 'https://cdn.skypack.dev/'+pkg;
+const src = `export * from '${url}'
 export { default } from '${url}'`;
 
 const skypackFetchPlugin = {
