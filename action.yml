@@ -1,0 +1,16 @@
+name: Bundle for deno
+description: Create deno bundle for a package.
+author: Philipp Burckhardt <pburckhardt@outlook.com>
+
+inputs:
+  pkg:
+    description: npm package name
+    type: string
+
+runs:
+  using: node12
+  main: index.js
+
+branding:
+  icon: send
+  color: green
