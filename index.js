@@ -29,7 +29,7 @@ const { terser } = require( 'rollup-plugin-terser' );
 
 let pkg = core.getInput( 'pkg' );
 if ( !pkg ) {
-	// Case: No package specified, so use the package from the current repository.
+	// Case: No package specified, so use the npm package corresponding to the current repository.
 	pkg = '@stdlib/' + github.context.repo.repo;
 }
 const input = '__es_bundle__.js';

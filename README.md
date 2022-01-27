@@ -22,7 +22,7 @@ limitations under the License.
 
 # Deno Bundle
 
-> GitHub action to create deno bundle for a package.
+> GitHub action to create a Deno bundle for an npm package.
 
 ---
 
@@ -51,7 +51,7 @@ jobs:
 
 ## Inputs
 
--   `pkg`: *(optional)* a string containing the name of the package to bundle. Defaults to the package in the current repository.
+-   `pkg`: *(optional)* a string containing the name of the npm package to bundle. Defaults to the package in the current repository.
 
 ## License
 

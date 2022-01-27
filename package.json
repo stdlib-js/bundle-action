@@ -1,7 +1,7 @@
 {
     "name": "deno-bundle-action",
     "version": "1.0.0",
-    "description": "GitHub action to create deno bundle for a package.",
+    "description": "GitHub action to create a Deno bundle for an npm package.",
     "main": "index.js",
     "scripts": {},
     "keywords": [

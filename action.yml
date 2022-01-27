@@ -1,5 +1,5 @@
-name: Bundle for deno
-description: Create deno bundle for a package.
+name: Bundle for Deno
+description: Create a Deno bundle for an npm package.
 author: Philipp Burckhardt <pburckhardt@outlook.com>
 
 inputs:
