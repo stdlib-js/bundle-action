@@ -34,6 +34,20 @@ if ( !pkg ) {
 	// Case: No package specified, so use the npm package corresponding to the current repository.
 	pkg = '@stdlib/' + github.context.repo.repo;
 }
+const esmPlugin =  {
+	name: 'rollup-plugin-esm-url-plugin',
+	resolveId( pkg ) {
+		if ( pkg.startsWith( '@stdlib' ) ) {
+			const url = 'https://cdn.jsdelivr.net/gh/stdlib-js/' + pkg.replace( '@stdlib/', '' ) + '/index.mjs';
+			return {
+				id: url,
+				external: true
+			};
+		}
+		return null;
+	}
+};
+
 
 // FUNCTIONS //
 
@@ -54,8 +68,8 @@ function config( target ) {
 				plugins: [ nodeResolve(), commonjs(), terser({
 					output: {
 						comments: function onComment( node, comment ) {
-							var text = comment.value;
-							return /reference/i.test(text);
+							const text = comment.value;
+							return /reference/i.test( text );
 						}
 					}
 				}) ]
@@ -69,12 +83,34 @@ function config( target ) {
 		case 'umd': 
 			inputOptions = {
 				input: './lib/index.js',
-				plugins: [ nodeResolve(), commonjs(), terser() ]
+				plugins: [ nodeResolve(), commonjs(), terser({
+					output: {
+						comments: function onComment( node, comment ) {
+							return false;
+						}
+					}
+				}) ]
 			};
 			outputOptions = {
-				file: './umd/mod.js',
+				file: './umd/bundle.js',
 				format: 'umd',
 				name: pkg
+			};
+		break;
+		case 'esm':
+			inputOptions = {
+				input: './lib/index.js',
+				plugins: [ commonjs(), esmPlugin(), terser({
+					output: {
+						comments: function onComment( node, comment ) {
+							return false;
+						}
+					}
+				}) ]
+			};
+			outputOptions = {
+				file: './esm/index.mjs',
+				format: 'es'
 			};
 		break;
 	}
