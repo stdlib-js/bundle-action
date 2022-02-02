@@ -38,13 +38,21 @@ const esmPlugin =  {
 	name: 'rollup-plugin-esm-url-plugin',
 	resolveId( pkg ) {
 		if ( pkg.startsWith( '@stdlib' ) ) {
-			const url = 'https://cdn.jsdelivr.net/gh/stdlib-js/' + pkg.replace( '@stdlib/', '' ) + '/index.mjs';
+			const url = 'https://cdn.jsdelivr.net/gh/stdlib-js/' + pkg.replace( '@stdlib/', '' ) + '@esm/index.mjs';
 			return {
 				id: url,
 				external: true
 			};
 		}
 		return null;
+	}
+};
+const terserOptions = {
+	output: {
+		comments: function onComment( node, comment ) {
+			const text = comment.value;
+			return /reference/i.test( text );
+		}
 	}
 };
 
@@ -65,14 +73,7 @@ function config( target ) {
 		case 'deno':
 			inputOptions = {
 				input: './lib/index.js',
-				plugins: [ nodeResolve(), commonjs(), terser({
-					output: {
-						comments: function onComment( node, comment ) {
-							const text = comment.value;
-							return /reference/i.test( text );
-						}
-					}
-				}) ]
+				plugins: [ nodeResolve(), commonjs(), terser( terserOptions ) ]
 			};
 			outputOptions = {
 				file: './deno/mod.js',
@@ -83,13 +84,7 @@ function config( target ) {
 		case 'umd': 
 			inputOptions = {
 				input: './lib/index.js',
-				plugins: [ nodeResolve(), commonjs(), terser({
-					output: {
-						comments: function onComment( node, comment ) {
-							return false;
-						}
-					}
-				}) ]
+				plugins: [ nodeResolve(), commonjs(), terser( terserOptions ) ]
 			};
 			outputOptions = {
 				file: './umd/bundle.js',
@@ -100,13 +95,7 @@ function config( target ) {
 		case 'esm':
 			inputOptions = {
 				input: './lib/index.js',
-				plugins: [ commonjs(), esmPlugin, terser({
-					output: {
-						comments: function onComment( node, comment ) {
-							return false;
-						}
-					}
-				}) ]
+				plugins: [ commonjs(), esmPlugin, terser( terserOptions ) ]
 			};
 			outputOptions = {
 				file: './esm/index.mjs',
