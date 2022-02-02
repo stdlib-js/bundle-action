@@ -100,7 +100,7 @@ function config( target ) {
 		case 'esm':
 			inputOptions = {
 				input: './lib/index.js',
-				plugins: [ commonjs(), esmPlugin(), terser({
+				plugins: [ commonjs(), esmPlugin, terser({
 					output: {
 						comments: function onComment( node, comment ) {
 							return false;
@@ -110,7 +110,8 @@ function config( target ) {
 			};
 			outputOptions = {
 				file: './esm/index.mjs',
-				format: 'es'
+				format: 'es',
+				banner: '/// <reference types="./index.d.ts" />'
 			};
 		break;
 	}
