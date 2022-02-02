@@ -76,7 +76,7 @@ function config( target ) {
 		case 'deno':
 			inputOptions = {
 				input: './lib/index.js',
-				plugins: [ nodeResolve(), commonjs(), deno(), terser( terserOptions ) ]
+				plugins: [ nodeResolve(), commonjs(), deno.default(), terser( terserOptions ) ]
 			};
 			outputOptions = {
 				file: './deno/mod.js',
