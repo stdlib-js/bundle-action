@@ -22,7 +22,7 @@ const { rollup } = require( 'rollup' );
 const resolve = require( 'rollup-plugin-url-resolve' );
 const { terser } = require( 'rollup-plugin-terser' );
 const commonjs = require( '@rollup/plugin-commonjs' );
-const { nodeResolve } = '@rollup/plugin-node-resolve';
+const { nodeResolve } = require( '@rollup/plugin-node-resolve' );
 
 
 // VARIABLES //
