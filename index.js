@@ -49,12 +49,11 @@ const esmPlugin =  {
 		return null;
 	}
 };
-const RE_REFERENCE = /\/\/\/ <reference/i;
 const terserOptions = {
 	output: {
 		comments: function onComment( node, comment ) {
 			const text = comment.value;
-			return RE_REFERENCE.test( text );
+			return /\/\/\/ <reference/i.test( text );
 		}
 	}
 };
