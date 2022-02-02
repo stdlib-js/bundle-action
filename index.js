@@ -18,19 +18,18 @@
 
 // MODULES //
 
-const core = require( '@actions/core' );
-const github = require( '@actions/github' );
 const { rollup } = require( 'rollup' );
 const resolve = require( 'rollup-plugin-url-resolve' );
 const { terser } = require( 'rollup-plugin-terser' );
 const commonjs = require( '@rollup/plugin-commonjs' );
+const { nodeResolve } = '@rollup/plugin-node-resolve';
 
 
 // VARIABLES //
 
 const inputOptions = {
 	input: './lib/index.js',
-	plugins: [ commonjs(), resolve(), terser({
+	plugins: [ nodeResolve(), commonjs(), resolve(), terser({
 		output: {
 			comments: function onComment( node, comment ) {
 				var text = comment.value;
