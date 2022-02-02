@@ -22,8 +22,9 @@ const core = require( '@actions/core' );
 const github = require( '@actions/github' );
 const { rollup } = require( 'rollup' );
 const { terser } = require( 'rollup-plugin-terser' );
-const commonjs = require( '@rollup/plugin-commonjs' );
 const { nodeResolve } = require( '@rollup/plugin-node-resolve' );
+const commonjs = require( '@rollup/plugin-commonjs' );
+const nodePolyfills = require( 'rollup-plugin-polyfill-node' );
 const deno = require( 'rollup-plugin-deno' );
 
 
@@ -86,7 +87,7 @@ function config( target ) {
 		case 'umd': 
 			inputOptions = {
 				input: './lib/index.js',
-				plugins: [ nodeResolve(), commonjs(), terser( terserOptions ) ]
+				plugins: [ nodeResolve(), commonjs(), nodePolyfills({ include: null }), terser( terserOptions ) ]
 			};
 			outputOptions = {
 				file: './umd/bundle.js',
@@ -97,7 +98,7 @@ function config( target ) {
 		case 'esm':
 			inputOptions = {
 				input: './lib/index.js',
-				plugins: [ commonjs(), esmPlugin, terser( terserOptions ) ]
+				plugins: [ commonjs(), nodePolyfills({ include: null }), esmPlugin, terser( terserOptions ) ]
 			};
 			outputOptions = {
 				file: './esm/index.mjs',
