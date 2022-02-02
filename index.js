@@ -24,6 +24,7 @@ const { rollup } = require( 'rollup' );
 const { terser } = require( 'rollup-plugin-terser' );
 const commonjs = require( '@rollup/plugin-commonjs' );
 const { nodeResolve } = require( '@rollup/plugin-node-resolve' );
+const deno = require( 'rollup-plugin-deno' );
 
 
 // VARIABLES //
@@ -75,7 +76,7 @@ function config( target ) {
 		case 'deno':
 			inputOptions = {
 				input: './lib/index.js',
-				plugins: [ nodeResolve(), commonjs(), terser( terserOptions ) ]
+				plugins: [ nodeResolve(), commonjs(), deno(), terser( terserOptions ) ]
 			};
 			outputOptions = {
 				file: './deno/mod.js',
