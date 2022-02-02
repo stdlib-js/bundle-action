@@ -38,7 +38,8 @@ const esmPlugin =  {
 	name: 'rollup-plugin-esm-url-plugin',
 	resolveId( pkg ) {
 		if ( pkg.startsWith( '@stdlib' ) ) {
-			const url = 'https://cdn.jsdelivr.net/gh/stdlib-js/' + pkg.replace( '@stdlib/', '' ) + '@esm/index.mjs';
+			const version = '@esm'; 
+			const url = 'https://cdn.jsdelivr.net/gh/stdlib-js/' + pkg.replace( '@stdlib/', '' ) + version + '/index.mjs';
 			return {
 				id: url,
 				external: true
@@ -47,11 +48,12 @@ const esmPlugin =  {
 		return null;
 	}
 };
+const RE_REFERENCE = /\/\/\/ <reference/i;
 const terserOptions = {
 	output: {
 		comments: function onComment( node, comment ) {
 			const text = comment.value;
-			return /reference/i.test( text );
+			return RE_REFERENCE.test( text );
 		}
 	}
 };
