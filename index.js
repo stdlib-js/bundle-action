@@ -18,6 +18,8 @@
 
 // MODULES //
 
+const core = require( '@actions/core' );
+const github = require( '@actions/github' );
 const { rollup } = require( 'rollup' );
 const { terser } = require( 'rollup-plugin-terser' );
 const commonjs = require( '@rollup/plugin-commonjs' );
