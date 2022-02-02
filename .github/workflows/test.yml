@@ -32,7 +32,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          repo: 'stdlib-js/assert-is-nan'
+          repository: 'stdlib-js/assert-is-nan'
       - uses: actions/setup-node@v2
         with:
           node-version: 16
