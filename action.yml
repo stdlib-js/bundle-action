@@ -1,8 +1,11 @@
-name: Bundle for Deno
-description: Create a Deno bundle for an npm package.
+name: Create Bundles
+description: Create bundles for a stdlib package.
 author: Philipp Burckhardt <pburckhardt@outlook.com>
 
 inputs:
+  target:
+    description: Bundle target (`deno`, `umd`, or `esm`).
+    type: string
   pkg:
     description: npm package name
     type: string

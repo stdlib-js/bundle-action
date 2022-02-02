@@ -20,9 +20,9 @@ limitations under the License.
 
 ---
 
-# Deno Bundle
+# Create Bundle
 
-> GitHub action to create a Deno bundle for an npm package.
+> GitHub action to create bundles for a stdlib package.
 
 ---
 
@@ -30,7 +30,7 @@ limitations under the License.
 
 ```yml
 # Workflow name:
-name: deno-bundle
+name: bundle
 
 # Workflow triggers:
 on:
@@ -43,15 +43,26 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          repository: 'stdlib-js/assert-is-nan'
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+        timeout-minutes: 5
+      - name: Install production and development dependencies
+        id: install
+        run: |
+          npm install || npm install || npm install
       - name: Bundle `@stdlib/assert-is-nan`
         uses: ./
         with:
-          pkg: "@stdlib/assert-is-nan"
+          target: "deno"
 ```
 
 ## Inputs
 
--   `pkg`: *(optional)* a string containing the name of the npm package to bundle. Defaults to the package in the current repository.
+-   `target`: Bundle target (`deno`, `umd`, or `esm`).
+-   `pkg`: (optional) a string containing the name of the npm package to bundle. Defaults to the package in the current repository.
 
 ## License
 
