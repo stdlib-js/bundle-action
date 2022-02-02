@@ -42,8 +42,7 @@ const inputOptions = {
 const outputOptions = {
 	file: './deno/mod.js',
 	format: 'es',
-	banner: '/// <reference types="./mod.d.ts" />',
-	name: pkg
+	banner: '/// <reference types="./mod.d.ts" />'
 };
 
 
