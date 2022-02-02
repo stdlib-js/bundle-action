@@ -23,38 +23,14 @@ const github = require( '@actions/github' );
 const { rollup } = require( 'rollup' );
 const resolve = require( 'rollup-plugin-url-resolve' );
 const { terser } = require( 'rollup-plugin-terser' );
+const commonjs = require( '@rollup/plugin-commonjs' );
 
 
 // VARIABLES //
 
-let pkg = core.getInput( 'pkg' );
-if ( !pkg ) {
-	// Case: No package specified, so use the npm package corresponding to the current repository.
-	pkg = '@stdlib/' + github.context.repo.repo;
-}
-const input = '__es_bundle__.js';
-const url = 'https://cdn.skypack.dev/'+pkg;
-const src = `export * from '${url}'
-export { default } from '${url}'`;
-
-const skypackFetchPlugin = {
-	name: 'skypack-fetch-pkg',
-	load( id ) {
-		if ( id === input ) {
-			return src;
-		}
-		return null;
-	},
-	resolveId( source ) {
-		if ( source === input ) {
-			return source;
-		}
-		return null;
-	}
-};
 const inputOptions = {
-	input,
-	plugins: [ skypackFetchPlugin, resolve(), terser({
+	input: './lib/index.js',
+	plugins: [ commonjs(), resolve(), terser({
 		output: {
 			comments: function onComment( node, comment ) {
 				var text = comment.value;
