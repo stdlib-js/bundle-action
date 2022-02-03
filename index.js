@@ -54,6 +54,7 @@ const terserOptions = {
 	output: {
 		comments: function onComment( node, comment ) {
 			const text = comment.value;
+			console.log( 'Comment:', text );
 			return /\/\/\/ <reference/i.test( text );
 		}
 	}
