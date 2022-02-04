@@ -86,7 +86,8 @@ function config( target ) {
 			outputOptions = {
 				file: './deno/mod.js',
 				format: 'es',
-				banner: '/// <reference types="./mod.d.ts" />'
+				banner: '/// <reference types="./mod.d.ts" />',
+				sourcemap: true
 			};
 		break;
 		case 'umd': 
@@ -97,7 +98,8 @@ function config( target ) {
 			outputOptions = {
 				file: './umd/bundle.js',
 				format: 'umd',
-				name: alias
+				name: alias,
+				sourcemap: true
 			};
 		break;
 		case 'esm':
@@ -108,7 +110,8 @@ function config( target ) {
 			outputOptions = {
 				file: './esm/index.mjs',
 				format: 'es',
-				banner: '/// <reference types="./index.d.ts" />'
+				banner: '/// <reference types="./index.d.ts" />',
+				sourcemap: true
 			};
 		break;
 	}
