@@ -36,6 +36,11 @@ if ( !pkg ) {
 	// Case: No package specified, so use the npm package corresponding to the current repository.
 	pkg = '@stdlib/' + github.context.repo.repo;
 }
+let alias = core.getInput( 'alias' );
+if ( !alias ) {
+	// Case: No alias specified, so use the npm package name:
+	alias = pkg;
+}
 const esmPlugin =  {
 	name: 'rollup-plugin-esm-url-plugin',
 	resolveId( pkg ) {
@@ -92,7 +97,7 @@ function config( target ) {
 			outputOptions = {
 				file: './umd/bundle.js',
 				format: 'umd',
-				name: pkg
+				name: alias
 			};
 		break;
 		case 'esm':

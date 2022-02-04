@@ -9,6 +9,9 @@ inputs:
   pkg:
     description: npm package name
     type: string
+  alias:
+    description: Alias for the package in the global scope for the `umd` bundle.
+    type: string
 
 runs:
   using: node12
