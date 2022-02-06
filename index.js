@@ -81,7 +81,7 @@ function config( target ) {
 		case 'deno':
 			inputOptions = {
 				input: './lib/index.js',
-				plugins: [ nodeResolve(), commonjs(), json({ compact: true }), nodePolyfills({ include: null }), terser( terserOptions ) ]
+				plugins: [ nodePolyfills({ include: null }), nodeResolve({ preferBuiltins: false }), commonjs(), json({ compact: true }), terser( terserOptions ) ]
 			};
 			outputOptions = {
 				file: './deno/mod.js',
@@ -93,7 +93,7 @@ function config( target ) {
 		case 'umd': 
 			inputOptions = {
 				input: './lib/index.js',
-				plugins: [ nodeResolve(), commonjs(), json({ compact: true }), nodePolyfills({ include: null }), terser( terserOptions ) ]
+				plugins: [ nodePolyfills({ include: null }), nodeResolve({ preferBuiltins: false }), commonjs(), json({ compact: true }), terser( terserOptions ) ]
 			};
 			outputOptions = {
 				file: './umd/bundle.js',
@@ -105,7 +105,7 @@ function config( target ) {
 		case 'esm':
 			inputOptions = {
 				input: './lib/index.js',
-				plugins: [ commonjs(), json({ compact: true }), nodePolyfills({ include: null }), esmPlugin, terser( terserOptions ) ]
+				plugins: [ nodePolyfills({ include: null }), commonjs(), json({ compact: true }), esmPlugin, terser( terserOptions ) ]
 			};
 			outputOptions = {
 				file: './esm/index.mjs',
