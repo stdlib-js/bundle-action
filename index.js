@@ -128,7 +128,7 @@ async function build() {
 		await bundle.write( outputOptions );
 		console.log( 'Finished.' );
 	} catch ( err ) {
-		console.error( err );
+		core.setFailed( err.message );
 	}
 };
 
