@@ -25,6 +25,7 @@ const { terser } = require( 'rollup-plugin-terser' );
 const { nodeResolve } = require( '@rollup/plugin-node-resolve' );
 const commonjs = require( '@rollup/plugin-commonjs' );
 const nodePolyfills = require( 'rollup-plugin-polyfill-node' );
+const { visualizer } = require( 'rollup-plugin-visualizer' );
 const json = require( '@rollup/plugin-json' );
 
 
@@ -83,7 +84,12 @@ function config( target ) {
 		case 'deno':
 			inputOptions = {
 				input: './lib/index.js',
-				plugins: [ nodePolyfills({ include: null }), nodeResolve({ preferBuiltins: false }), commonjs(), json({ compact: true }), terser( terserOptions ) ]
+				plugins: [ 
+					nodePolyfills({ include: null }), 
+					nodeResolve({ preferBuiltins: false }), 
+					commonjs(), json({ compact: true }), 
+					terser( terserOptions )
+				]
 			};
 			outputOptions = {
 				file: './deno/mod.js',
@@ -95,7 +101,13 @@ function config( target ) {
 		case 'umd': 
 			inputOptions = {
 				input: './lib/index.js',
-				plugins: [ nodePolyfills({ include: null }), nodeResolve({ preferBuiltins: false }), commonjs(), json({ compact: true }), terser( terserOptions ) ]
+				plugins: [ 
+					nodePolyfills({ include: null }), 
+					nodeResolve({ preferBuiltins: false }), 
+					commonjs(), json({ compact: true }), 
+					terser( terserOptions ), 
+					visualizer({ filename: './umd/stats.html'}) 
+				]
 			};
 			outputOptions = {
 				file: './umd/bundle.js',
@@ -107,7 +119,14 @@ function config( target ) {
 		case 'esm':
 			inputOptions = {
 				input: './lib/index.js',
-				plugins: [ nodePolyfills({ include: null }), commonjs(), json({ compact: true }), esmPlugin, terser( terserOptions ) ]
+				plugins: [ 
+					nodePolyfills({ include: null }), 
+					commonjs(), 
+					json({ compact: true }), 
+					esmPlugin, 
+					terser( terserOptions ),
+					visualizer({ filename: './esm/stats.html'}) 
+				]
 			};
 			outputOptions = {
 				file: './esm/index.mjs',
