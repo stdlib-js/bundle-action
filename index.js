@@ -87,7 +87,8 @@ function config( target ) {
 				plugins: [ 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false }), 
-					commonjs(), json({ compact: true }), 
+					commonjs(), 
+					json({ compact: true }), 
 					terser( terserOptions )
 				]
 			};
@@ -104,7 +105,8 @@ function config( target ) {
 				plugins: [ 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false }), 
-					commonjs(), json({ compact: true }), 
+					commonjs(), 
+					json({ compact: true }), 
 					terser( terserOptions ), 
 					visualizer({ filename: './umd/stats.html'}) 
 				]
@@ -121,6 +123,7 @@ function config( target ) {
 				input: './lib/index.js',
 				plugins: [ 
 					nodePolyfills({ include: null }), 
+					nodeResolve({ preferBuiltins: false }), 
 					commonjs(), 
 					json({ compact: true }), 
 					esmPlugin, 
