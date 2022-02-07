@@ -122,11 +122,11 @@ function config( target ) {
 			inputOptions = {
 				input: './lib/index.js',
 				plugins: [ 
+					esmPlugin, 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false }), 
 					commonjs(), 
 					json({ compact: true }), 
-					esmPlugin, 
 					terser( terserOptions ),
 					visualizer({ filename: './esm/stats.html'}) 
 				]
