@@ -26,6 +26,7 @@ const { nodeResolve } = require( '@rollup/plugin-node-resolve' );
 const commonjs = require( '@rollup/plugin-commonjs' );
 const nodePolyfills = require( 'rollup-plugin-polyfill-node' );
 const { visualizer } = require( 'rollup-plugin-visualizer' );
+const replace = require( '@stdlib/string-replace' );
 const json = require( '@rollup/plugin-json' );
 
 
@@ -47,8 +48,8 @@ const esmPlugin =  {
 	resolveId( pkg ) {
 		if ( pkg.startsWith( '@stdlib' ) ) {
 			const version = '@esm'; 
-			pkg = pkg.replace( '@stdlib/', '' ); // e.g., `@stdlib/math/base` -> `math/base`
-			pkg = pkg.replace( '/', '-' ); // e.g., `math/base/special/gamma` -> `math-base-special-gamma`
+			pkg = replace( pkg, '@stdlib/', '' ); // e.g., `@stdlib/math/base` -> `math/base`
+			pkg = replace( pkg, '/', '-' ); // e.g., `math/base/special/gamma` -> `math-base-special-gamma`
 			const url = 'https://cdn.jsdelivr.net/gh/stdlib-js/' + pkg + version + '/index.mjs';
 			return {
 				id: url,
