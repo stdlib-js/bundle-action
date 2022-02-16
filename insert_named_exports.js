@@ -44,7 +44,7 @@ function transform( code, id ) {
 	}
 	const exports = [];
 	const magicString = new MagicString( code );
-	src = replace( src, SET_EXPORT_REGEX, transformExport );
+	code = replace( code, SET_EXPORT_REGEX, transformExport );
 	if ( exports.length > 0 ) {
 		magicString.append( '\nexport { ' + exports.join( ', ' ) + '};' );
 	}
