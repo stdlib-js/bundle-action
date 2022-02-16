@@ -26,7 +26,7 @@ const replace = require( '@stdlib/string-replace' );
 
 // VARIABLES //
 
-const SET_EXPORT_REGEX = /^setReadOnly\s*\(\s*(\w+)\s*,\s*['"](\w+)['"]\s*,\s*(require\(\s*\S+\s*\))\s*\)\s*;\s*$/mg;
+const SET_EXPORT_REGEX = /^setReadOnly\s*\(\s*(\w+)\s*,\s*['"](\w+)['"]\s*,\s*([\w$]+)\s*\)\s*;\s*$/mg;
 
 
 // FUNCTIONS //
