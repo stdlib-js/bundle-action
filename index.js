@@ -64,10 +64,12 @@ const terserOptions = {
 	output: {
 		comments: function onComment( node, comment ) {
 			const text = comment.value;
-			return /\/ <reference/i.test( text );
+			return /\/ <reference/i.test( text ) || text.includes( 'The Stdlib Authors. License is Apache-2.0' );
 		}
 	}
 };
+const CURRENT_YEAR = new Date().getFullYear();
+const LICENSE_COMMENT = '// Copyright (c) '+CURRENT_YEAR+' The Stdlib Authors. License is Apache-2.0: http://www.apache.org/licenses/LICENSE-2.0';
 
 
 // FUNCTIONS //
@@ -98,7 +100,11 @@ function config( target ) {
 			outputOptions = {
 				file: './deno/mod.js',
 				format: 'es',
-				banner: '/// <reference types="./mod.d.ts" />',
+				banner: [
+					LICENSE_COMMENT,
+					'',
+					'/// <reference types="./mod.d.ts" />'
+				].join( '\n' ),
 				sourcemap: true
 			};
 		break;
@@ -117,6 +123,7 @@ function config( target ) {
 			outputOptions = {
 				file: './umd/bundle.js',
 				format: 'umd',
+				banner: LICENSE_COMMENT,
 				name: alias,
 				sourcemap: true
 			};
@@ -138,7 +145,11 @@ function config( target ) {
 			outputOptions = {
 				file: './esm/index.mjs',
 				format: 'es',
-				banner: '/// <reference types="./index.d.ts" />',
+				banner: [
+					LICENSE_COMMENT,
+					'',
+					'/// <reference types="./index.d.ts" />'
+				].join( '\n' ),
 				sourcemap: true
 			};
 		break;
