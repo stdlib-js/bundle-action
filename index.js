@@ -28,6 +28,7 @@ const nodePolyfills = require( 'rollup-plugin-polyfill-node' );
 const { visualizer } = require( 'rollup-plugin-visualizer' );
 const replace = require( '@stdlib/string-replace' );
 const json = require( '@rollup/plugin-json' );
+const insertNamedExports = require( './insert_named_exports.js' );
 
 
 // VARIABLES //
@@ -86,6 +87,7 @@ function config( target ) {
 			inputOptions = {
 				input: './lib/index.js',
 				plugins: [ 
+					insertNamedExports,
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false }), 
 					commonjs(), 
@@ -123,6 +125,7 @@ function config( target ) {
 			inputOptions = {
 				input: './lib/index.js',
 				plugins: [ 
+					insertNamedExports,
 					esmPlugin, 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false }), 
