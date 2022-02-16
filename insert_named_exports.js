@@ -46,10 +46,11 @@ function transform( code, id ) {
 	console.log( code );
 	const exports = [];
 	const magicString = new MagicString( code );
-	code = replace( code, SET_EXPORT_REGEX, transformExport );
-	if ( exports.length > 0 ) {
-		magicString.append( '\nexport { ' + exports.join( ', ' ) + '};' );
+	replace( code, SET_EXPORT_REGEX, transformExport );
+	if ( exports.length === 0 ) {
+		return null;
 	}
+	magicString.append( '\nexport { ' + exports.join( ', ' ) + '};' );
 	return {
 		'code': magicString.toString(),
 		'map': magicString.generateMap()

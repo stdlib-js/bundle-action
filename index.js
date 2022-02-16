@@ -87,10 +87,10 @@ function config( target ) {
 			inputOptions = {
 				input: './lib/index.js',
 				plugins: [ 
-					insertNamedExports,
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false }), 
 					commonjs(), 
+					insertNamedExports,
 					json({ compact: true }), 
 					terser( terserOptions )
 				]
@@ -125,11 +125,11 @@ function config( target ) {
 			inputOptions = {
 				input: './lib/index.js',
 				plugins: [ 
-					insertNamedExports,
 					esmPlugin, 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false }), 
 					commonjs(), 
+					insertNamedExports,
 					json({ compact: true }), 
 					terser( terserOptions ),
 					visualizer({ filename: './esm/stats.html'}) 
