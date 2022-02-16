@@ -39,8 +39,6 @@ const SET_EXPORT_REGEX = /^setReadOnly\s*\(\s*(\w+)\s*,\s*['"](\w+)['"]\s*,\s*([
 * @returns {(null|Object)} transformed source or null if no transformation was performed
 */
 function transform( code, id ) {
-	console.log( 'Transforming...' );
-	console.log( code );
 	if ( !SET_EXPORT_REGEX.test( code ) ) {
 		return null;
 	}
