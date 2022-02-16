@@ -26,7 +26,7 @@ const replace = require( '@stdlib/string-replace' );
 
 // VARIABLES //
 
-const SET_EXPORT_REGEX = /^setReadOnly\s*\(\s*(\w+)\s*,\s*['"](\w+)['"]\s*,\s*(\w+)\s*\)\s*;\s*$/mg;
+const SET_EXPORT_REGEX = /^setReadOnly\s*\(\s*(\w+)\s*,\s*['"](\w+)['"]\s*,\s*(require\(\s*\S+\s*\))\s*\)\s*;\s*$/mg;
 
 
 // FUNCTIONS //
@@ -42,6 +42,8 @@ function transform( code, id ) {
 	if ( !SET_EXPORT_REGEX.test( code ) ) {
 		return null;
 	}
+	console.log( 'Transforming...' );
+	console.log( code );
 	const exports = [];
 	const magicString = new MagicString( code );
 	code = replace( code, SET_EXPORT_REGEX, transformExport );
