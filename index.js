@@ -93,8 +93,7 @@ function config( target ) {
 					nodeResolve({ preferBuiltins: false }), 
 					commonjs(), 
 					insertNamedExports,
-					json({ compact: true }), 
-					terser( terserOptions )
+					json({ compact: true })
 				]
 			};
 			outputOptions = {
@@ -168,6 +167,7 @@ async function build() {
 	try {
 		const bundle = await rollup( inputOptions );
 		const res = await bundle.write( outputOptions );
+		console.log( 'Results:' );
 		console.log( res );
 		console.log( 'Finished.' );
 	} catch ( err ) {
