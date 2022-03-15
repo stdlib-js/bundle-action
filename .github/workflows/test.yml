@@ -45,3 +45,5 @@ jobs:
       - name: Bundle package for Deno
         id: deno-bundle
         uses: stdlib-js/deno-bundle-action@main
+        with:
+          target: 'esm'
