@@ -167,7 +167,8 @@ async function build() {
 	const { inputOptions, outputOptions } = config( target );
 	try {
 		const bundle = await rollup( inputOptions );
-		await bundle.write( outputOptions );
+		const res = await bundle.write( outputOptions );
+		console.log( res );
 		console.log( 'Finished.' );
 	} catch ( err ) {
 		core.setFailed( err.message );
