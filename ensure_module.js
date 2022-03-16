@@ -42,8 +42,8 @@ function transform( code, id ) {
 		return null;
 	}
 	const magicString = new MagicString( code );
-	magicString.prepend( 'if ( typeof module !== "undefined" ) {' );
-	magicString.append( '}' );
+	magicString.prepend( 'typeof module !== "undefined" ?' );
+	magicString.append( ': null;' );
 	return {
 		'code': magicString.toString(),
 		'map': magicString.generateMap()
