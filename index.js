@@ -29,7 +29,7 @@ const { visualizer } = require( 'rollup-plugin-visualizer' );
 const replace = require( '@stdlib/string-replace' );
 const json = require( '@rollup/plugin-json' );
 const insertNamedExports = require( './insert_named_exports.js' );
-const removeModuleExports = replace( './remove_module_exports.js' );
+const removeModuleExports = require( './remove_module_exports.js' );
 
 
 // VARIABLES //
