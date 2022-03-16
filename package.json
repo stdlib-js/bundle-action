@@ -20,15 +20,15 @@
     "dependencies": {
         "@actions/core": "^1.6.0",
         "@actions/github": "^5.0.0",
-        "@rollup/plugin-commonjs": "^21.0.1",
+        "@rollup/plugin-commonjs": "^21.0.2",
         "@rollup/plugin-json": "^4.1.0",
         "@rollup/plugin-node-resolve": "^13.1.3",
-        "@stdlib/string-replace": "^0.0.9",
-        "magic-string": "^0.25.7",
-        "rollup": "^2.66.1",
+        "@stdlib/string-replace": "^0.0.10",
+        "magic-string": "^0.26.1",
+        "rollup": "^2.70.1",
         "rollup-plugin-polyfill-node": "^0.8.0",
         "rollup-plugin-terser": "^7.0.2",
         "rollup-plugin-url-resolve": "^0.2.0",
-        "rollup-plugin-visualizer": "^5.5.4"
+        "rollup-plugin-visualizer": "^5.6.0"
     }
 }
