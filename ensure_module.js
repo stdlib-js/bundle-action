@@ -42,7 +42,7 @@ function transform( code, id ) {
 		return null;
 	}
 	const magicString = new MagicString( code );
-	magicString.prepend( '\nvar module = { exports: {} };\n' );
+	magicString.prepend( 'if ( typeof module === "undefined" ) { module = {}; }\n' );
 	return {
 		'code': magicString.toString(),
 		'map': magicString.generateMap()
