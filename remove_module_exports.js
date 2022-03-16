@@ -31,7 +31,7 @@ const MODULE_EXPORTS_RE = /^module\.exports\s*=\s*(\w+)\s*;\s*$/m;
 // FUNCTIONS //
 
 /**
-* Ensure `module` is defined when `module.exports` is referenced.
+* Remove `module.exports` references from a file.
 *
 * @param {string} code - source to be transformed
 * @param {string} id - module id
@@ -42,8 +42,7 @@ function transform( code, id ) {
 		return null;
 	}
 	const magicString = new MagicString( code );
-	magicString.prepend( 'typeof module !== "undefined" ?' );
-	magicString.append( ': null;' );
+	magicString.replace( MODULE_EXPORTS_RE, '' );
 	return {
 		'code': magicString.toString(),
 		'map': magicString.generateMap()

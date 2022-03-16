@@ -29,7 +29,7 @@ const { visualizer } = require( 'rollup-plugin-visualizer' );
 const replace = require( '@stdlib/string-replace' );
 const json = require( '@rollup/plugin-json' );
 const insertNamedExports = require( './insert_named_exports.js' );
-const ensureModule = require( './ensure_module.js' );
+const removeModuleExports = replace( './remove_module_exports.js' );
 
 
 // VARIABLES //
@@ -95,7 +95,7 @@ function config( target ) {
 					commonjs({ ignoreGlobal: false }), 
 					insertNamedExports,
 					json({ compact: true }),
-					ensureModule,
+					removeModuleExports,
 					terser( terserOptions )
 				]
 			};
@@ -139,8 +139,7 @@ function config( target ) {
 					nodeResolve({ preferBuiltins: false }), 
 					commonjs(), 
 					insertNamedExports,
-					json({ compact: true }), 
-					ensureModule,
+					json({ compact: true }),
 					terser( terserOptions ),
 					visualizer({ filename: './esm/stats.html'}) 
 				]
