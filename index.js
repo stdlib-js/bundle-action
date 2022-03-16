@@ -91,7 +91,7 @@ function config( target ) {
 				plugins: [ 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false }), 
-					commonjs({ ignoreGlobal: false }), 
+					commonjs({ ignoreGlobal: true }), 
 					insertNamedExports,
 					terser( terserOptions ), 
 					json({ compact: true })
