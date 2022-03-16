@@ -29,6 +29,7 @@ const { visualizer } = require( 'rollup-plugin-visualizer' );
 const replace = require( '@stdlib/string-replace' );
 const json = require( '@rollup/plugin-json' );
 const insertNamedExports = require( './insert_named_exports.js' );
+const ensureModule = require( './ensure_module.js' );
 
 
 // VARIABLES //
@@ -91,10 +92,11 @@ function config( target ) {
 				plugins: [ 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false }), 
-					commonjs({ ignoreGlobal: true }), 
+					commonjs({ ignoreGlobal: false }), 
 					insertNamedExports,
 					terser( terserOptions ), 
-					json({ compact: true })
+					json({ compact: true }),
+					ensureModule
 				]
 			};
 			outputOptions = {
