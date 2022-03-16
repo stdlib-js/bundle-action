@@ -94,9 +94,9 @@ function config( target ) {
 					nodeResolve({ preferBuiltins: false }), 
 					commonjs({ ignoreGlobal: false }), 
 					insertNamedExports,
-					terser( terserOptions ), 
 					json({ compact: true }),
-					ensureModule
+					ensureModule,
+					terser( terserOptions )
 				]
 			};
 			outputOptions = {
@@ -140,6 +140,7 @@ function config( target ) {
 					commonjs(), 
 					insertNamedExports,
 					json({ compact: true }), 
+					ensureModule,
 					terser( terserOptions ),
 					visualizer({ filename: './esm/stats.html'}) 
 				]
