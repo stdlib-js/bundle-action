@@ -53,7 +53,7 @@ function transform( code, id ) {
 // MAIN //
 
 const plugin = {
-	'name': 'rollup-plugin-ensure-module',
+	'name': 'rollup-plugin-remove-module-exports',
 	'transform': transform
 };
 
