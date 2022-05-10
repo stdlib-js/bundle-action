@@ -23,6 +23,7 @@ const github = require( '@actions/github' );
 const { rollup } = require( 'rollup' );
 const { terser } = require( 'rollup-plugin-terser' );
 const { nodeResolve } = require( '@rollup/plugin-node-resolve' );
+const analyze = require( 'rollup-plugin-analyzer' );
 const commonjs = require( '@rollup/plugin-commonjs' );
 const nodePolyfills = require( 'rollup-plugin-polyfill-node' );
 const { visualizer } = require( 'rollup-plugin-visualizer' );
@@ -76,6 +77,24 @@ const LICENSE_COMMENT = '// Copyright (c) '+CURRENT_YEAR+' The Stdlib Authors. L
 // FUNCTIONS //
 
 /**
+* Callback invoked with results of bundle results analysis.
+*
+* @private
+* @param {Object} res - analysis results
+*/
+function onAnalysis( res ) {
+	await core.summary
+		.addHeading( 'Analysis Results', 'h1' )
+		.addRaw( `Bundle size in bytes: ${res.bundleSize} (before minification).` )
+		.addRaw( `Original bundle size in bytes: ${res.bundleOrigSize} (before minification).` )
+		.addRaw( `Bundle reduction (in %): ${res.bundleReduction}.` )
+		.addRaw( `Count of all included modules: ${res.moduleCount}.` )
+		.addHeading( 'Modules', 'h2' )
+		.addTable( res.modules )
+		.write();
+}
+
+/**
 * Returns rollup input and output options for a given target. 
 *
 * @private
@@ -96,7 +115,8 @@ function config( target ) {
 					insertNamedExports,
 					json({ compact: true }),
 					removeModuleExports,
-					terser( terserOptions )
+					terser( terserOptions ),
+					analyze({ onAnalysis })
 				]
 			};
 			outputOptions = {
@@ -119,7 +139,8 @@ function config( target ) {
 					commonjs(), 
 					json({ compact: true }), 
 					terser( terserOptions ), 
-					visualizer({ filename: './umd/stats.html'}) 
+					visualizer({ filename: './umd/stats.html'}),
+					analyze({ onAnalysis })
 				]
 			};
 			outputOptions = {
@@ -141,7 +162,8 @@ function config( target ) {
 					insertNamedExports,
 					json({ compact: true }),
 					terser( terserOptions ),
-					visualizer({ filename: './esm/stats.html'}) 
+					visualizer({ filename: './esm/stats.html'}) ,
+					analyze({ onAnalysis })
 				]
 			};
 			outputOptions = {
