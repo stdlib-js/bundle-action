@@ -113,11 +113,11 @@ async function onAnalysis( res ) {
 	].concat( res.modules.map( elem => {
 		return [
 			elem.id,
-			elem.size,
-			elem.origSize,
+			String( elem.size ),
+			String( elem.origSize ),
 			elem.dependents.join( ', ' ),
-			elem.percent,
-			elem.reduction,
+			String( elem.percent ),
+			String( elem.reduction ),
 			elem.renderedExports.join( ', ' ),
 			elem.removedExports.join( ', ' )
 		];
@@ -125,9 +125,13 @@ async function onAnalysis( res ) {
 	await core.summary
 		.addHeading( 'Analysis Results', 'h1' )
 		.addRaw( `Bundle size in bytes: ${res.bundleSize} (before minification).` )
+		.addBreak()
 		.addRaw( `Original bundle size in bytes: ${res.bundleOrigSize} (before minification).` )
+		.addBreak()
 		.addRaw( `Bundle reduction (in %): ${res.bundleReduction}.` )
+		.addBreak()
 		.addRaw( `Count of all included modules: ${res.moduleCount}.` )
+		.addBreak()
 		.addHeading( 'Modules', 'h2' )
 		.addTable( table )
 		.write();
