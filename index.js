@@ -82,7 +82,7 @@ const LICENSE_COMMENT = '// Copyright (c) '+CURRENT_YEAR+' The Stdlib Authors. L
 * @private
 * @param {Object} res - analysis results
 */
-function onAnalysis( res ) {
+async function onAnalysis( res ) {
 	await core.summary
 		.addHeading( 'Analysis Results', 'h1' )
 		.addRaw( `Bundle size in bytes: ${res.bundleSize} (before minification).` )
