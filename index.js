@@ -90,7 +90,53 @@ async function onAnalysis( res ) {
 		.addRaw( `Bundle reduction (in %): ${res.bundleReduction}.` )
 		.addRaw( `Count of all included modules: ${res.moduleCount}.` )
 		.addHeading( 'Modules', 'h2' )
-		.addTable( res.modules )
+		.addTable( 
+			[	
+				{
+					data: 'ID',
+					header: true
+				},
+				{
+					data: 'Size',
+					header: true
+				},
+				{
+					data: 'Original Size',
+					header: true
+				},
+				{
+					data: 'Dependents',
+					header: true
+				},
+				{
+					data: 'Percent',
+					header: true
+				},
+				{
+					data: 'Reduction',
+					header: true
+				},
+				{
+					data: 'Rendered Exports',
+					header: true
+				},
+				{
+					data: 'Removed Exports',
+					header: true
+				}
+			].concat( res.modules.map( elem => {
+				return [
+					elem.id,
+					elem.size,
+					elem.origSize,
+					elem.dependents.join( ', ' ),
+					elem.percent,
+					elem.reduction,
+					elem.renderedExports.join( ', ' ),
+					elem.removedExports.join( ', ' )
+				];
+			}) )
+		)
 		.write();
 }
 
