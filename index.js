@@ -84,38 +84,32 @@ const LICENSE_COMMENT = '// Copyright (c) '+CURRENT_YEAR+' The Stdlib Authors. L
 */
 async function onAnalysis( res ) {
 	const table = [	
-		{
-			data: 'ID',
-			header: true
-		},
-		{
-			data: 'Size',
-			header: true
-		},
-		{
-			data: 'Original Size',
-			header: true
-		},
-		{
-			data: 'Dependents',
-			header: true
-		},
-		{
-			data: 'Percent',
-			header: true
-		},
-		{
-			data: 'Reduction',
-			header: true
-		},
-		{
-			data: 'Rendered Exports',
-			header: true
-		},
-		{
-			data: 'Removed Exports',
-			header: true
-		}
+		[
+			{
+				data: 'ID', header: true
+			},
+			{
+				data: 'Size', header: true
+			},
+			{
+				data: 'Original Size', header: true
+			},
+			{
+				data: 'Dependents', header: true
+			},
+			{
+				data: 'Percent', header: true
+			},
+			{
+				data: 'Reduction', header: true
+			},
+			{
+				data: 'Rendered Exports', header: true
+			},
+			{
+				data: 'Removed Exports', header: true
+			}
+		]
 	].concat( res.modules.map( elem => {
 		return [
 			elem.id,
@@ -128,8 +122,6 @@ async function onAnalysis( res ) {
 			elem.removedExports.join( ', ' )
 		];
 	}) );
-	console.log( 'Table: ' );
-	console.log( table );
 	await core.summary
 		.addHeading( 'Analysis Results', 'h1' )
 		.addRaw( `Bundle size in bytes: ${res.bundleSize} (before minification).` )
