@@ -26,7 +26,7 @@ on:
 
 # Workflow jobs:
 jobs:
-  send:
+  bundle:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
