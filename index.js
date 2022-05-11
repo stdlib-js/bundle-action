@@ -84,7 +84,7 @@ const LICENSE_COMMENT = '// Copyright (c) '+CURRENT_YEAR+' The Stdlib Authors. L
 */
 async function onAnalysis( res ) {
 	const piechart = [
-		'pie title "Rollup Bundle Modules'
+		'pie title Rollup Bundle Modules'
 	];
 	const table = [	
 		[
@@ -114,7 +114,7 @@ async function onAnalysis( res ) {
 			}
 		]
 	].concat( res.modules.map( elem => {
-		piechart.push( ` ${elem.id}: ${elem.percent}` );
+		piechart.push( ` "${elem.id}" : ${elem.percent}` );
 		return [
 			elem.id,
 			String( elem.size ),
