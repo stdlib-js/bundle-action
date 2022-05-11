@@ -85,7 +85,7 @@ const LICENSE_COMMENT = '// Copyright (c) '+CURRENT_YEAR+' The Stdlib Authors. L
 async function onAnalysis( res ) {
 	const piechart = [
 		'pie title "Rollup Bundle Modules'
-	].join( '\n' );
+	];
 	const table = [	
 		[
 			{
@@ -138,7 +138,7 @@ async function onAnalysis( res ) {
 		.addBreak()
 		.addHeading( 'Modules', 'h2' )
 		.addTable( table )
-		.addCodeBlock( piechart, 'mermaid' )
+		.addCodeBlock( piechart.join( '\n' ), 'mermaid' )
 		.write();
 }
 
