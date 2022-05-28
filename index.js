@@ -72,6 +72,7 @@ const terserOptions = {
 };
 const CURRENT_YEAR = new Date().getFullYear();
 const LICENSE_COMMENT = '// Copyright (c) '+CURRENT_YEAR+' The Stdlib Authors. License is Apache-2.0: http://www.apache.org/licenses/LICENSE-2.0';
+console.log( 'Workspace:', github.context.workspace );
 
 
 // FUNCTIONS //
