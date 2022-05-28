@@ -178,12 +178,12 @@ function config( target ) {
 				sourcemap: true
 			};
 		break;
-		case 'umd': 
+		case 'umd-node':
 			inputOptions = {
 				input: './lib/index.js',
 				plugins: [ 
 					nodePolyfills({ include: null }), 
-					nodeResolve({ preferBuiltins: false }), 
+					nodeResolve({ preferBuiltins: false,  browser: false }), 
 					commonjs(), 
 					json({ compact: true }), 
 					terser( terserOptions ), 
@@ -192,7 +192,28 @@ function config( target ) {
 				]
 			};
 			outputOptions = {
-				file: './umd/bundle.js',
+				file: './umd/index.js',
+				format: 'umd',
+				banner: LICENSE_COMMENT,
+				name: alias,
+				sourcemap: true
+			};
+		break;
+		case 'umd-browser':
+			inputOptions = {
+				input: './lib/index.js',
+				plugins: [ 
+					nodePolyfills({ include: null }), 
+					nodeResolve({ preferBuiltins: false, browser: true }), 
+					commonjs(), 
+					json({ compact: true }), 
+					terser( terserOptions ), 
+					visualizer({ filename: './umd/stats_browser.html'}),
+					analyze({ onAnalysis })
+				]
+			};
+			outputOptions = {
+				file: './umd/browser.js',
 				format: 'umd',
 				banner: LICENSE_COMMENT,
 				name: alias,
@@ -205,7 +226,7 @@ function config( target ) {
 				plugins: [ 
 					esmPlugin, 
 					nodePolyfills({ include: null }), 
-					nodeResolve({ preferBuiltins: false }), 
+					nodeResolve({ preferBuiltins: false, browser: true }), 
 					commonjs(), 
 					insertNamedExports,
 					json({ compact: true }),
