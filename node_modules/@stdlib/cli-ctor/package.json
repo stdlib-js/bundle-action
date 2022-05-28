@@ -1,6 +1,6 @@
 {
   "name": "@stdlib/cli-ctor",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Command-line interface.",
   "license": "Apache-2.0",
   "author": {

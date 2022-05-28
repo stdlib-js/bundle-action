@@ -1,6 +1,6 @@
 {
   "name": "@stdlib/utils-define-nonenumerable-read-only-property",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Define a non-enumerable read-only property.",
   "license": "Apache-2.0",
   "author": {

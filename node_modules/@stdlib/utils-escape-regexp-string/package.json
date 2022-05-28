@@ -1,6 +1,6 @@
 {
   "name": "@stdlib/utils-escape-regexp-string",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Escape a regular expression string or pattern.",
   "license": "Apache-2.0",
   "author": {

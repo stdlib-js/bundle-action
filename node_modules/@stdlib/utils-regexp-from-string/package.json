@@ -1,6 +1,6 @@
 {
   "name": "@stdlib/utils-regexp-from-string",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Create a regular expression from a regular expression string.",
   "license": "Apache-2.0",
   "author": {

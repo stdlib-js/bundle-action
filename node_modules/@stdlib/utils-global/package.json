@@ -1,6 +1,6 @@
 {
   "name": "@stdlib/utils-global",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Return the global object.",
   "license": "Apache-2.0",
   "author": {
