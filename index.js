@@ -19,6 +19,7 @@
 // MODULES //
 
 const process = require( 'process' );
+const path = require( 'path' );
 const fs = require( 'fs' );
 const core = require( '@actions/core' );
 const github = require( '@actions/github' );
