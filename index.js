@@ -77,7 +77,7 @@ const CURRENT_YEAR = new Date().getFullYear();
 const LICENSE_COMMENT = '// Copyright (c) '+CURRENT_YEAR+' The Stdlib Authors. License is Apache-2.0: http://www.apache.org/licenses/LICENSE-2.0';
 const cwd = process.cwd();
 const pkgJSON = JSON.parse( fs.readFileSync( path.join( cwd, 'package.json' ), 'utf8' ) );
-console.log( pkgJSON );
+const entryPoint = pkgJSON.browser ? pkgJSON.browser : './lib/index.js';
 
 
 // FUNCTIONS //
@@ -161,7 +161,7 @@ function config( target ) {
 	switch ( target ) {
 		case 'deno':
 			inputOptions = {
-				input: './lib/index.js',
+				input: entryPoint,
 				plugins: [ 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false }), 
@@ -186,7 +186,7 @@ function config( target ) {
 		break;
 		case 'umd-node':
 			inputOptions = {
-				input: './lib/index.js',
+				input: entryPoint,
 				plugins: [ 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false,  browser: false }), 
@@ -207,7 +207,7 @@ function config( target ) {
 		break;
 		case 'umd-browser':
 			inputOptions = {
-				input: './lib/index.js',
+				input: entryPoint,
 				plugins: [ 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
@@ -228,7 +228,7 @@ function config( target ) {
 		break;
 		case 'esm':
 			inputOptions = {
-				input: './lib/index.js',
+				input: entryPoint,
 				plugins: [ 
 					esmPlugin, 
 					nodePolyfills({ include: null }), 
