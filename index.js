@@ -18,6 +18,7 @@
 
 // MODULES //
 
+const process = require( 'process' );
 const core = require( '@actions/core' );
 const github = require( '@actions/github' );
 const { rollup } = require( 'rollup' );
@@ -72,7 +73,7 @@ const terserOptions = {
 };
 const CURRENT_YEAR = new Date().getFullYear();
 const LICENSE_COMMENT = '// Copyright (c) '+CURRENT_YEAR+' The Stdlib Authors. License is Apache-2.0: http://www.apache.org/licenses/LICENSE-2.0';
-console.log( 'Context:', github.context );
+console.log( 'cwd:', rocess.cwd() );
 
 
 // FUNCTIONS //
