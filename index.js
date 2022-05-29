@@ -19,6 +19,7 @@
 // MODULES //
 
 const process = require( 'process' );
+const fs = require( 'fs' );
 const core = require( '@actions/core' );
 const github = require( '@actions/github' );
 const { rollup } = require( 'rollup' );
@@ -73,7 +74,9 @@ const terserOptions = {
 };
 const CURRENT_YEAR = new Date().getFullYear();
 const LICENSE_COMMENT = '// Copyright (c) '+CURRENT_YEAR+' The Stdlib Authors. License is Apache-2.0: http://www.apache.org/licenses/LICENSE-2.0';
-console.log( 'cwd:', process.cwd() );
+const cwd = process.cwd();
+const pkgJSON = JSON.parse( fs.readFileSync( path.join( cwd, 'package.json' ), 'utf8' ) );
+console.log( pkgJSON );
 
 
 // FUNCTIONS //
