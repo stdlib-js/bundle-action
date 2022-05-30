@@ -211,7 +211,7 @@ function config( target ) {
 				input: entryPoint,
 				plugins: [ 
 					shim({
-						'@stdlib/utils-global': 'function global(){ return window; }'
+						'@stdlib/utils-global': 'function() { return window; }'
 					}),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
