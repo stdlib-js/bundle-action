@@ -29,6 +29,7 @@ const { nodeResolve } = require( '@rollup/plugin-node-resolve' );
 const analyze = require( 'rollup-plugin-analyzer' );
 const commonjs = require( '@rollup/plugin-commonjs' );
 const nodePolyfills = require( 'rollup-plugin-polyfill-node' );
+const shim = require( 'rollup-plugin-shim' );
 const { visualizer } = require( 'rollup-plugin-visualizer' );
 const replace = require( '@stdlib/string-replace' );
 const json = require( '@rollup/plugin-json' );
