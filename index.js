@@ -209,6 +209,9 @@ function config( target ) {
 			inputOptions = {
 				input: entryPoint,
 				plugins: [ 
+					shim({
+						'@stdlib/utils-global': 'function global(){ return window; }'
+					}),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
 					commonjs(), 
