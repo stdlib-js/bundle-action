@@ -41,7 +41,7 @@ const browserShims = require( './browser_shims.json' );
 // VARIABLES //
 
 const target = core.getInput( 'target' );
-const minify = core.getInput( 'minify' );
+const minify = core.getInput( 'minify' ) !== 'false';
 let pkg = core.getInput( 'pkg' );
 if ( !pkg ) {
 	// Case: No package specified, so use the npm package corresponding to the current repository.

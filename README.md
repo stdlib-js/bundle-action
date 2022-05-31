@@ -64,6 +64,7 @@ jobs:
 -   `target`: Bundle target (`deno`, `umd`, or `esm`).
 -   `pkg`: (optional) a string containing the name of the npm package to bundle. Defaults to the package in the current repository.
 -   `alias`: (optional) a string containing an alias for the package in the global scope for the `umd` bundle. Defaults to the package name.
+-   `minify`: (optional) a boolean indicating whether to minify the bundle. Defaults to `true`.
 
 ## License
 
