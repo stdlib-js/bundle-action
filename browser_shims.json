@@ -1,4 +1,5 @@
 {
     "@stdlib/assert-has-node-buffer-support": "export default () => false",
-    "@stdlib/utils-global": "export default () => { return window; }"
+    "@stdlib/utils-global": "export default () => { return window; }",
+    "debug": "export default () => () => void 0"
 }
