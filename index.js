@@ -35,6 +35,7 @@ const replace = require( '@stdlib/string-replace' );
 const json = require( '@rollup/plugin-json' );
 const insertNamedExports = require( './insert_named_exports.js' );
 const removeModuleExports = require( './remove_module_exports.js' );
+const browserShims = require( './browser_shims.json' );
 
 
 // VARIABLES //
@@ -154,7 +155,7 @@ async function onAnalysis( res ) {
 *
 * @private
 * @param {string} target - build target (`deno`, `umd`, or `esm`)
-* @returns {Object} - rollup input and output options
+* @returns {Object} rollup input and output options
 */
 function config( target ) {
 	let inputOptions;
@@ -210,9 +211,7 @@ function config( target ) {
 			inputOptions = {
 				input: entryPoint,
 				plugins: [ 
-					shim({
-						'@stdlib/utils-global': 'export default () => { return window; }'
-					}),
+					shim( browserShims ),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
 					commonjs(), 
@@ -234,6 +233,7 @@ function config( target ) {
 			inputOptions = {
 				input: entryPoint,
 				plugins: [ 
+					shim( browserShims ),
 					esmPlugin, 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 

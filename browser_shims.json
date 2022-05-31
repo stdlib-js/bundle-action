@@ -1,0 +1,3 @@
+{
+    "@stdlib/utils-global": "export default () => { return window; }"
+}
