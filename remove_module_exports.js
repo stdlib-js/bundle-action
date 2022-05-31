@@ -25,7 +25,7 @@ const MagicString = require( 'magic-string' );
 
 // VARIABLES //
 
-const MODULE_EXPORTS_RE = /^module\.exports\s*=\s*(\w+)\s*;\s*$/m;
+const MODULE_EXPORTS_RE = /^module\.exports\s*=\s*([\s\S]+?)\s*;\s*$/m;
 
 
 // FUNCTIONS //
