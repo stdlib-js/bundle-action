@@ -41,6 +41,7 @@ const browserShims = require( './browser_shims.json' );
 // VARIABLES //
 
 const target = core.getInput( 'target' );
+const minify = core.getInput( 'minify' );
 let pkg = core.getInput( 'pkg' );
 if ( !pkg ) {
 	// Case: No package specified, so use the npm package corresponding to the current repository.
@@ -170,9 +171,7 @@ function config( target ) {
 					commonjs({ ignoreGlobal: false }), 
 					insertNamedExports,
 					json({ compact: true }),
-					removeModuleExports,
-					terser( terserOptions ),
-					analyze({ onAnalysis })
+					removeModuleExports
 				]
 			};
 			outputOptions = {
@@ -193,10 +192,7 @@ function config( target ) {
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false,  browser: false }), 
 					commonjs(), 
-					json({ compact: true }), 
-					terser( terserOptions ), 
-					visualizer({ filename: './umd/stats.html'}),
-					analyze({ onAnalysis })
+					json({ compact: true })
 				]
 			};
 			outputOptions = {
@@ -216,9 +212,7 @@ function config( target ) {
 					nodeResolve({ preferBuiltins: false, browser: true }), 
 					commonjs(), 
 					json({ compact: true }), 
-					terser( terserOptions ), 
-					visualizer({ filename: './umd/stats_browser.html'}),
-					analyze({ onAnalysis })
+					visualizer({ filename: './umd/stats_browser.html'})
 				]
 			};
 			outputOptions = {
@@ -239,10 +233,7 @@ function config( target ) {
 					nodeResolve({ preferBuiltins: false, browser: true }), 
 					commonjs(), 
 					insertNamedExports,
-					json({ compact: true }),
-					terser( terserOptions ),
-					visualizer({ filename: './esm/stats.html'}) ,
-					analyze({ onAnalysis })
+					json({ compact: true })
 				]
 			};
 			outputOptions = {
@@ -257,6 +248,24 @@ function config( target ) {
 			};
 		break;
 	}
+	if ( minify ) {
+		inputOptions.plugins.push( terser( terserOptions ) );
+	}
+	switch ( target ) {
+		case 'deno':
+			inputOptions.plugins.push( visualizer({ filename: './deno/stats.html' }) );
+		break;
+		case 'umd-node':
+			inputOptions.plugins.push( visualizer({ filename: './umd/stats_node.html' }) );
+		break;
+		case 'umd-browser':
+			inputOptions.plugins.push( visualizer({ filename: './umd/stats_browser.html' }) );
+		break;
+		case 'esm':
+			inputOptions.plugins.push( visualizer({ filename: './esm/stats.html' }) );
+		break;
+	}
+	inputOptions.plugins.push( analyze({ onAnalysis }) );
 	return { inputOptions, outputOptions };
 }
 

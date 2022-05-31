@@ -12,6 +12,9 @@ inputs:
   alias:
     description: Alias for the package in the global scope for the `umd` bundle.
     type: string
+  minify:
+    description: Whether to minify the bundle.
+    type: boolean
 
 runs:
   using: node12
