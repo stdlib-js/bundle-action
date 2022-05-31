@@ -233,7 +233,8 @@ function config( target ) {
 					nodeResolve({ preferBuiltins: false, browser: true }), 
 					commonjs(), 
 					insertNamedExports,
-					json({ compact: true })
+					json({ compact: true }),
+					removeModuleExports
 				]
 			};
 			outputOptions = {
