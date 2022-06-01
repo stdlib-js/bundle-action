@@ -248,6 +248,8 @@ function config( target ) {
 				sourcemap: true
 			};
 		break;
+		default:
+			throw new Error( `Unknown target: ${target}` );
 	}
 	if ( minify ) {
 		inputOptions.plugins.push( terser( terserOptions ) );
