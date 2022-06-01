@@ -212,7 +212,7 @@ function config( target ) {
 					nodeResolve({ preferBuiltins: false, browser: true }), 
 					commonjs(), 
 					json({ compact: true }), 
-					visualizer({ filename: './umd/stats_browser.html'})
+					removeModuleExports
 				]
 			};
 			outputOptions = {
@@ -264,9 +264,9 @@ function config( target ) {
 		break;
 		case 'esm':
 			inputOptions.plugins.push( visualizer({ filename: './esm/stats.html' }) );
+			inputOptions.plugins.push( analyze({ onAnalysis }) );
 		break;
 	}
-	inputOptions.plugins.push( analyze({ onAnalysis }) );
 	return { inputOptions, outputOptions };
 }
 
