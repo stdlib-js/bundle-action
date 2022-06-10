@@ -69,13 +69,15 @@ const esmPlugin =  {
 	}
 };
 const terserOptions = {
-	output: {
-		comments: function onComment( node, comment ) {
+	'output': {
+		'comments': function onComment( node, comment ) {
 			const text = comment.value;
 			return /\/ <reference/i.test( text ) || text.includes( 'The Stdlib Authors. License is Apache-2.0' );
 		}
 	},
-	toplevel: true
+	'toplevel': true,
+	'hoist_funs': true,
+	'hoist_vars': true
 };
 const CURRENT_YEAR = new Date().getFullYear();
 const LICENSE_COMMENT = '// Copyright (c) '+CURRENT_YEAR+' The Stdlib Authors. License is Apache-2.0: http://www.apache.org/licenses/LICENSE-2.0';
