@@ -235,8 +235,7 @@ function config( target ) {
 					insertNamedExports,
 					json({ compact: true }),
 					removeModuleExports
-				],
-				preserveEntrySignatures: false
+				]
 			};
 			outputOptions = {
 				file: './esm/index.mjs',
@@ -252,6 +251,7 @@ function config( target ) {
 		default:
 			throw new Error( `Unknown target: ${target}` );
 	}
+	inputOptions.preserveEntrySignatures = 'strict';
 	if ( minify ) {
 		inputOptions.plugins.push( terser( terserOptions ) );
 	}
