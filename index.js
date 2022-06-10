@@ -235,7 +235,8 @@ function config( target ) {
 					insertNamedExports,
 					json({ compact: true }),
 					removeModuleExports
-				]
+				],
+				preserveEntrySignatures: false
 			};
 			outputOptions = {
 				file: './esm/index.mjs',
