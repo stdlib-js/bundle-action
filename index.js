@@ -74,7 +74,8 @@ const terserOptions = {
 			const text = comment.value;
 			return /\/ <reference/i.test( text ) || text.includes( 'The Stdlib Authors. License is Apache-2.0' );
 		}
-	}
+	},
+	toplevel: true
 };
 const CURRENT_YEAR = new Date().getFullYear();
 const LICENSE_COMMENT = '// Copyright (c) '+CURRENT_YEAR+' The Stdlib Authors. License is Apache-2.0: http://www.apache.org/licenses/LICENSE-2.0';
