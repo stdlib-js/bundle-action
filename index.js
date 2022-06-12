@@ -173,7 +173,7 @@ function config( target ) {
 				plugins: [ 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false }), 
-					commonjs({ ignoreGlobal: false }), 
+					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove' }), 
 					insertNamedExports,
 					json({ compact: true }),
 					removeModuleExports
@@ -215,7 +215,7 @@ function config( target ) {
 					shim( browserShims ),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
-					commonjs(), 
+					commonjs({ ignoreTryCatch: 'remove' }), 
 					json({ compact: true }), 
 					removeModuleExports
 				]
@@ -236,7 +236,7 @@ function config( target ) {
 					esmPlugin, 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
-					commonjs(), 
+					commonjs({ ignoreTryCatch: 'remove' }), 
 					insertNamedExports,
 					json({ compact: true }),
 					removeModuleExports
