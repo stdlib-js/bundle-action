@@ -38,7 +38,7 @@ const REQUIRES_RE = /^var\s*([\s\S]+?)\s*=\s*require\(\s*'([\s\S]+?)'\s*\);\s*$/
 * @returns {(null|Object)} transformed source or null if no transformation was performed
 */
 function transform( code, id ) {
-	if ( !MODULE_EXPORTS_RE.test( code ) ) {
+	if ( !REQUIRES_RE.test( code ) ) {
 		return null;
 	}
 	const magicString = new MagicString( code );
