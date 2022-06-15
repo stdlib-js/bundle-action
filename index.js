@@ -19,6 +19,7 @@
 // MODULES //
 
 const process = require( 'process' );
+const shell = require( 'child_process' ).execSync;
 const path = require( 'path' );
 const fs = require( 'fs' );
 const core = require( '@actions/core' );
@@ -281,6 +282,20 @@ function config( target ) {
 * Main function.
 */
 async function build() {
+	const command = [
+		'find ./ -type f -name \'*.[jt]s\' -path "./lib/*" -print0 ', // Find all JavaScript and TypeScript files in the destination directory and print their full names to standard output...
+		'| xargs -0 ', // Convert standard input to the arguments for following `sed` command...
+		'sed -Ei ', // Edit files in-place without creating a backup...
+		'"',
+		's/module\\.exports\\s*=\\s*/export default /g', // Replace `module.exports =` with `export default`...
+		';',
+		's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*([^)]+)\\s*\\);/import \\1 from \\2;/g', // Replace `var foo = require( 'bar' );` with `import foo from 'bar';`...
+		';',
+		's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*([^)]+)\\s*\\)\\.([a-zA-Z0-9]+);/import { \\3 as \\1 } from \\2;/g', // Replace `var foo = require( 'bar' ).baz;` with `import { baz as foo } from 'bar';`...
+		'"'
+	].join( '' );
+	shell( command );
+
 	const { inputOptions, outputOptions } = config( target );
 	try {
 		const bundle = await rollup( inputOptions );
