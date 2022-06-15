@@ -34,8 +34,6 @@ const { visualizer } = require( 'rollup-plugin-visualizer' );
 const replace = require( '@stdlib/string-replace' );
 const json = require( '@rollup/plugin-json' );
 const insertNamedExports = require( './insert_named_exports.js' );
-const replaceModuleExports = require( './replace_module_exports.js' );
-const replaceRequires = require( './replace_requires.js' );
 const browserShims = require( './browser_shims.json' );
 
 
@@ -174,8 +172,6 @@ function config( target ) {
 				plugins: [ 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false }), 
-					replaceRequires,
-					replaceModuleExports,
 					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove' }), 
 					insertNamedExports,
 					json({ compact: true }),
@@ -198,8 +194,6 @@ function config( target ) {
 				plugins: [ 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false,  browser: false }), 
-					replaceRequires,
-					replaceModuleExports,
 					commonjs(), 
 					json({ compact: true })
 				]
@@ -219,8 +213,6 @@ function config( target ) {
 					shim( browserShims ),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
-					replaceRequires,
-					replaceModuleExports,
 					commonjs({ ignoreTryCatch: 'remove' }), 
 					json({ compact: true })
 				]
@@ -239,8 +231,6 @@ function config( target ) {
 				plugins: [ 
 					shim( browserShims ),
 					esmPlugin, 
-					replaceRequires,
-					replaceModuleExports,
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
 					commonjs({ ignoreTryCatch: 'remove' }), 
