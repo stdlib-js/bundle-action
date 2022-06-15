@@ -239,10 +239,10 @@ function config( target ) {
 				plugins: [ 
 					shim( browserShims ),
 					esmPlugin, 
-					nodePolyfills({ include: null }), 
-					nodeResolve({ preferBuiltins: false, browser: true }), 
 					replaceRequires,
 					replaceModuleExports,
+					nodePolyfills({ include: null }), 
+					nodeResolve({ preferBuiltins: false, browser: true }), 
 					commonjs({ ignoreTryCatch: 'remove' }), 
 					insertNamedExports,
 					json({ compact: true })
