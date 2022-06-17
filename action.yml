@@ -4,13 +4,13 @@ author: Philipp Burckhardt <pburckhardt@outlook.com>
 
 inputs:
   target:
-    description: Bundle target (`deno`, `umd`, or `esm`).
+    description: Bundle target (`deno`, `umd-node`, `umd-browser`, or `esm`).
     type: string
   pkg:
     description: npm package name
     type: string
   alias:
-    description: Alias for the package in the global scope for the `umd` bundle.
+    description: Alias for the package in the global scope for the `umd` bundles.
     type: string
   minify:
     description: Whether to minify the bundle.
