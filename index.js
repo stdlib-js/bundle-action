@@ -77,8 +77,8 @@ const terserOptions = {
 	},
 	'toplevel': true,
 	'compress': {
-		'hoist_funs': true,
-		'hoist_vars': true
+		'hoist_funs': false,
+		'hoist_vars': false
 	}
 };
 const CURRENT_YEAR = new Date().getFullYear();
@@ -288,6 +288,8 @@ async function build() {
 		'sed -Ei ', // Edit files in-place without creating a backup...
 		'"',
 		's/module\\.exports\\s*=\\s*/export default /g', // Replace `module.exports =` with `export default`...
+		';',
+		's/setReadOnly\\(\\s*([a-zA-Z0-9_]+)\\s*,\\s*\'([a-zA-Z0-9_]+)\',\\s*require\\(\\s*\'([^\']+)\'\\s*\\)\\s*\\);/import \\2 from \'\\3\';\\nsetReadOnly( \\1, \'\\2\', \\2 );/g', // Replace `setReadOnly( foo, 'bar', require( 'baz' ) );` with `import bar from 'baz';\nsetReadOnly( foo, 'bar', bar );`...
 		';',
 		's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*([^)]+)\\s*\\);/import \\1 from \\2;/g', // Replace `var foo = require( 'bar' );` with `import foo from 'bar';`...
 		';',
