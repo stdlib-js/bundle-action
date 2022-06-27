@@ -18,7 +18,7 @@ inputs:
 
 runs:
   using: node12
-  main: index.js
+  main: dist/index.js
 
 branding:
   icon: send

@@ -1,0 +1,4 @@
+{
+    "@stdlib/assert-has-node-buffer-support": "export default () => false",
+    "debug": "export default () => () => void 0"
+}
