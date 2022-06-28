@@ -273,6 +273,8 @@ function config(target) {
 // MAIN //
 /**
 * Main function.
+*
+* @returns {Promise<void>} a promise which resolves when the bundle has been created
 */
 async function build() {
     const command = [
@@ -302,6 +304,5 @@ async function build() {
         core_1.default.setFailed(err.message);
     }
 }
-;
 build();
 //# sourceMappingURL=index.js.map

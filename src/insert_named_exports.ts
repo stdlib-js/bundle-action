@@ -20,7 +20,7 @@
 
 // MODULES //
 
-import MagicString from 'magic-string';
+import MagicString, { SourceMap } from 'magic-string';
 import replace from '@stdlib/string-replace';
 
 
@@ -38,7 +38,7 @@ const SET_EXPORT_REGEX = /^setReadOnly\s*\(\s*(\w+)\s*,\s*['"](\w+)['"]\s*,\s*([
 * @param {string} id - module id
 * @returns {(null|Object)} transformed source or null if no transformation was performed
 */
-function transform( code, id ) {
+function transform( code: string, id: string ): null|{ code: string, map: SourceMap } {
 	if ( !SET_EXPORT_REGEX.test( code ) ) {
 		return null;
 	}
@@ -64,7 +64,7 @@ function transform( code, id ) {
 	* @param {string} identifier - exported identifier
 	* @returns {string} transformed export statement
 	*/
-	function transformExport( str, namespace, exportName, identifier ) {
+	function transformExport( str: string, namespace: string, exportName: string, identifier: string ): string {
 		exports.push( identifier + ' as ' + exportName );
 		return str;
 	}

@@ -24,7 +24,7 @@ import path from 'path';
 import fs from 'fs';
 import core from '@actions/core';
 import github from '@actions/github';
-import { rollup } from 'rollup';
+import { InputOptions, OutputOptions, rollup } from 'rollup';
 import { terser } from 'rollup-plugin-terser';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import analyze from 'rollup-plugin-analyzer';
@@ -96,7 +96,7 @@ const entryPoint = pkgJSON.browser ? pkgJSON.browser : './lib/index.js';
 * @private
 * @param {Object} res - analysis results
 */
-async function onAnalysis( res ) {
+async function onAnalysis( res: any ) {
 	const piechart = [
 		'pie title Rollup Bundle Modules'
 	];
@@ -163,7 +163,7 @@ async function onAnalysis( res ) {
 * @param {string} target - build target (`deno`, `umd`, or `esm`)
 * @returns {Object} rollup input and output options
 */
-function config( target ) {
+function config( target: string ): { inputOptions: InputOptions, outputOptions: OutputOptions } {
 	let inputOptions;
 	let outputOptions;
 	switch ( target ) {
@@ -280,8 +280,10 @@ function config( target ) {
 
 /**
 * Main function.
+*
+* @returns {Promise<void>} a promise which resolves when the bundle has been created
 */
-async function build() {
+async function build(): Promise<void> {
 	const command = [
 		'find ./ -type f -name \'*.[jt]s\' -path "./lib/*" -print0 ', // Find all JavaScript and TypeScript files in the destination directory and print their full names to standard output...
 		'| xargs -0 ', // Convert standard input to the arguments for following `sed` command...
@@ -308,6 +310,6 @@ async function build() {
 	} catch ( err ) {
 		core.setFailed( err.message );
 	}
-};
+}
 
 build()
