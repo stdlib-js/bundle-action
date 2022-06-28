@@ -25,8 +25,8 @@ const process_1 = __importDefault(require("process"));
 const child_process_1 = require("child_process");
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
-const core_1 = __importDefault(require("@actions/core"));
-const github_1 = __importDefault(require("@actions/github"));
+const core_1 = require("@actions/core");
+const github_1 = require("@actions/github");
 const rollup_1 = require("rollup");
 const rollup_plugin_terser_1 = require("rollup-plugin-terser");
 const plugin_node_resolve_1 = require("@rollup/plugin-node-resolve");
@@ -40,14 +40,14 @@ const plugin_json_1 = __importDefault(require("@rollup/plugin-json"));
 const insert_named_exports_1 = __importDefault(require("./insert_named_exports"));
 const browser_shims_json_1 = __importDefault(require("./browser_shims.json"));
 // VARIABLES //
-const target = core_1.default.getInput('target');
-const minify = core_1.default.getInput('minify') !== 'false';
-let pkg = core_1.default.getInput('pkg');
+const target = (0, core_1.getInput)('target');
+const minify = (0, core_1.getInput)('minify') !== 'false';
+let pkg = (0, core_1.getInput)('pkg');
 if (!pkg) {
     // Case: No package specified, so use the npm package corresponding to the current repository.
-    pkg = '@stdlib/' + github_1.default.context.repo.repo;
+    pkg = '@stdlib/' + github_1.context.repo.repo;
 }
-let alias = core_1.default.getInput('alias');
+let alias = (0, core_1.getInput)('alias');
 if (!alias) {
     // Case: No alias specified, so use the npm package name:
     alias = pkg;
@@ -137,7 +137,7 @@ async function onAnalysis(res) {
             elem.removedExports.join(', ')
         ];
     }));
-    await core_1.default.summary
+    await core_1.summary
         .addHeading('Analysis Results', 'h1')
         .addRaw(`Bundle size in bytes: ${res.bundleSize} (before minification).`)
         .addBreak()
@@ -301,7 +301,7 @@ async function build() {
         console.log('Finished.');
     }
     catch (err) {
-        core_1.default.setFailed(err.message);
+        (0, core_1.setFailed)(err.message);
     }
 }
 build();
