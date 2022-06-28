@@ -22,8 +22,8 @@ import process from 'process';
 import { execSync as shell } from 'child_process';
 import path from 'path';
 import fs from 'fs';
-import core from '@actions/core';
-import github from '@actions/github';
+import { getInput, setFailed, summary } from '@actions/core';
+import { context } from '@actions/github';
 import { InputOptions, OutputOptions, rollup } from 'rollup';
 import { terser } from 'rollup-plugin-terser';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
@@ -40,14 +40,14 @@ import browserShims from './browser_shims.json';
 
 // VARIABLES //
 
-const target = core.getInput( 'target' );
-const minify = core.getInput( 'minify' ) !== 'false';
-let pkg = core.getInput( 'pkg' );
+const target = getInput( 'target' );
+const minify = getInput( 'minify' ) !== 'false';
+let pkg = getInput( 'pkg' );
 if ( !pkg ) {
 	// Case: No package specified, so use the npm package corresponding to the current repository.
-	pkg = '@stdlib/' + github.context.repo.repo;
+	pkg = '@stdlib/' + context.repo.repo;
 }
-let alias = core.getInput( 'alias' );
+let alias = getInput( 'alias' );
 if ( !alias ) {
 	// Case: No alias specified, so use the npm package name:
 	alias = pkg;
@@ -140,7 +140,7 @@ async function onAnalysis( res: any ) {
 			elem.removedExports.join( ', ' )
 		];
 	}) );
-	await core.summary
+	await summary
 		.addHeading( 'Analysis Results', 'h1' )
 		.addRaw( `Bundle size in bytes: ${res.bundleSize} (before minification).` )
 		.addBreak()
@@ -308,7 +308,7 @@ async function build(): Promise<void> {
 		console.log( res );
 		console.log( 'Finished.' );
 	} catch ( err ) {
-		core.setFailed( err.message );
+		setFailed( err.message );
 	}
 }
 
