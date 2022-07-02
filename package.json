@@ -21,14 +21,14 @@
     },
     "license": "Apache-2.0",
     "dependencies": {
-        "@actions/core": "^1.8.2",
+        "@actions/core": "^1.9.0",
         "@actions/github": "^5.0.3",
-        "@rollup/plugin-commonjs": "^22.0.0",
+        "@rollup/plugin-commonjs": "^22.0.1",
         "@rollup/plugin-json": "^4.1.0",
         "@rollup/plugin-node-resolve": "^13.3.0",
         "@stdlib/string-replace": "^0.0.10",
         "magic-string": "^0.26.2",
-        "rollup": "^2.75.1",
+        "rollup": "^2.75.7",
         "rollup-plugin-analyzer": "^4.0.0",
         "rollup-plugin-polyfill-node": "^0.9.0",
         "rollup-plugin-shim": "^1.0.0",
@@ -38,10 +38,9 @@
     },
     "devDependencies": {
         "@types/node": "^18.0.0",
-        "@typescript-eslint/eslint-plugin": "^5.30.0",
-        "@typescript-eslint/parser": "^5.30.0",
-        "esbuild": "^0.14.43",
-        "eslint": "^8.18.0",
+        "@typescript-eslint/eslint-plugin": "^5.30.3",
+        "@typescript-eslint/parser": "^5.30.3",
+        "eslint": "^8.19.0",
         "typescript": "^4.7.4"
     }
 }
