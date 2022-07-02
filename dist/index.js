@@ -168,8 +168,8 @@ function config(target) {
                 input: entryPoint,
                 plugins: [
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
-                    (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false }),
-                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove', include: /node_modules/, transformMixedEsModules: true }),
+                    (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: false }),
+                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }),
                     insert_named_exports_1.default,
                     (0, plugin_json_1.default)({ compact: true }),
                 ]
@@ -191,7 +191,7 @@ function config(target) {
                 plugins: [
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: false }),
-                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, include: /node_modules/, transformMixedEsModules: true }),
+                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, transformMixedEsModules: true }),
                     (0, plugin_json_1.default)({ compact: true })
                 ]
             };
@@ -210,7 +210,7 @@ function config(target) {
                     (0, rollup_plugin_shim_1.default)(browser_shims_json_1.default),
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: true }),
-                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove', include: /node_modules/, transformMixedEsModules: true }),
+                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }),
                     (0, plugin_json_1.default)({ compact: true })
                 ]
             };
