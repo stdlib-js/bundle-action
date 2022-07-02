@@ -173,7 +173,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 				plugins: [ 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false }), 
-					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove' }), 
+					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', include: /node_modules/ }), 
 					insertNamedExports,
 					json({ compact: true }),
 				]
