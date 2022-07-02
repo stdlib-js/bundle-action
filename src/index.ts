@@ -195,7 +195,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 				plugins: [ 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false,  browser: false }), 
-					commonjs(), 
+					commonjs({ include: /node_modules/, transformMixedEsModules: true }), 
 					json({ compact: true })
 				]
 			};
@@ -214,7 +214,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					shim( browserShims ),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
-					commonjs({ ignoreTryCatch: 'remove' }), 
+					commonjs({ ignoreTryCatch: 'remove', include: /node_modules/, transformMixedEsModules: true }), 
 					json({ compact: true })
 				]
 			};
