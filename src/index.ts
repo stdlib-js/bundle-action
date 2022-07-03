@@ -196,6 +196,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false,  browser: false }), 
 					commonjs({ ignoreGlobal: false, transformMixedEsModules: true }), 
+					insertNamedExports,
 					json({ compact: true })
 				]
 			};
@@ -215,6 +216,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
 					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }), 
+					insertNamedExports,
 					json({ compact: true })
 				]
 			};
