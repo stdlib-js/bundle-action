@@ -278,7 +278,7 @@ function config(target) {
 */
 async function build() {
     const command = [
-        'find ./ -type f -name \'*.[jt]s\' -path "./lib/*" -o -path "./node_modules/@stdlib/*/lib/*" -print0 ',
+        'find ./ -type f -name \'*.[jt]s\' ( -path "./lib/*" -o -path "./node_modules/@stdlib/*/lib/*" ) -print0 ',
         '| xargs -0 ',
         'sed -Ei ',
         '"',
