@@ -24,7 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const magic_string_1 = __importDefault(require("magic-string"));
 const string_replace_1 = __importDefault(require("@stdlib/string-replace"));
 // VARIABLES //
-const SET_EXPORT_REGEX = /^setReadOnly\s*\(\s*(\w+)\s*,\s*['"](\w+)['"]\s*,\s*([\w$]+)\s*\)\s*;\s*$/mg;
+const SET_EXPORT_REGEX = /^setReadOnly\s*\(\s*(\w+)\s*,\s*['"](\w+)['"]\s*,\s*([\w$.() ]+)\s*\)\s*;\s*$/mg;
 // FUNCTIONS //
 /**
 * Transform CommonJS requires to ESM imports.
