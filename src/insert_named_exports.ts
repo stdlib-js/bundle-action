@@ -26,7 +26,7 @@ import replace from '@stdlib/string-replace';
 
 // VARIABLES //
 
-const SET_EXPORT_REGEX = /^setReadOnly\s*\(\s*(\w+)\s*,\s*['"](\w+)['"]\s*,\s*([\w$]+)\s*\)\s*;\s*$/mg;
+const SET_EXPORT_REGEX = /^setReadOnly\s*\(\s*(\w+)\s*,\s*['"](\w+)['"]\s*,\s*([A-Z_$][\w$]*)\s*\)\s*;\s*$/mg;
 
 
 // FUNCTIONS //
