@@ -39,6 +39,7 @@ const string_replace_1 = __importDefault(require("@stdlib/string-replace"));
 const plugin_json_1 = __importDefault(require("@rollup/plugin-json"));
 const insert_named_exports_1 = __importDefault(require("./insert_named_exports"));
 const browser_shims_json_1 = __importDefault(require("./browser_shims.json"));
+const general_shims_json_1 = __importDefault(require("./general_shims.json"));
 // VARIABLES //
 const target = (0, core_1.getInput)('target');
 const minify = (0, core_1.getInput)('minify') !== 'false';
@@ -167,6 +168,7 @@ function config(target) {
             inputOptions = {
                 input: entryPoint,
                 plugins: [
+                    (0, rollup_plugin_shim_1.default)(general_shims_json_1.default),
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: false }),
                     (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove' }),
@@ -189,6 +191,7 @@ function config(target) {
             inputOptions = {
                 input: entryPoint,
                 plugins: [
+                    (0, rollup_plugin_shim_1.default)(general_shims_json_1.default),
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: false }),
                     (0, plugin_commonjs_1.default)({ ignoreGlobal: false }),
@@ -208,7 +211,7 @@ function config(target) {
             inputOptions = {
                 input: entryPoint,
                 plugins: [
-                    (0, rollup_plugin_shim_1.default)(browser_shims_json_1.default),
+                    (0, rollup_plugin_shim_1.default)({ ...general_shims_json_1.default, ...browser_shims_json_1.default }),
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: true }),
                     (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove' }),
@@ -228,7 +231,7 @@ function config(target) {
             inputOptions = {
                 input: entryPoint,
                 plugins: [
-                    (0, rollup_plugin_shim_1.default)(browser_shims_json_1.default),
+                    (0, rollup_plugin_shim_1.default)({ ...general_shims_json_1.default, ...browser_shims_json_1.default }),
                     esmPlugin,
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: true }),

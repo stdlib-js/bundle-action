@@ -36,6 +36,7 @@ import replace from '@stdlib/string-replace';
 import json from '@rollup/plugin-json';
 import insertNamedExports from './insert_named_exports';
 import browserShims from './browser_shims.json';
+import generalShims from './general_shims.json';
 
 
 // VARIABLES //
@@ -171,6 +172,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 			inputOptions = {
 				input: entryPoint,
 				plugins: [ 
+					shim( generalShims ),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: false }), 
 					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove' }), 
@@ -193,6 +195,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 			inputOptions = {
 				input: entryPoint,
 				plugins: [ 
+					shim( generalShims ),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false,  browser: false }), 
 					commonjs({ ignoreGlobal: false }), 
@@ -212,7 +215,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 			inputOptions = {
 				input: entryPoint,
 				plugins: [ 
-					shim( browserShims ),
+					shim({ ...generalShims, ...browserShims }),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
 					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove' }), 
@@ -232,7 +235,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 			inputOptions = {
 				input: entryPoint,
 				plugins: [ 
-					shim( browserShims ),
+					shim({ ...generalShims, ...browserShims }),
 					esmPlugin, 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
