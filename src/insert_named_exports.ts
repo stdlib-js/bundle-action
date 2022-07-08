@@ -27,6 +27,7 @@ import replace from '@stdlib/string-replace';
 // VARIABLES //
 
 const SET_EXPORT_REGEX = /^setReadOnly\s*\(\s*(\w+)\s*,\s*['"](\w+)['"]\s*,\s*([A-Za-z_$][\w$]*)\s*\)\s*;\s*$/mg;
+const EXPORTS_COMMENT_REGEX = /^\s*\/\/\s*exports:\s*(\{[^}]*\})\s*$/m;
 
 
 // FUNCTIONS //
@@ -34,21 +35,31 @@ const SET_EXPORT_REGEX = /^setReadOnly\s*\(\s*(\w+)\s*,\s*['"](\w+)['"]\s*,\s*([
 /**
 * Transform CommonJS requires to ESM imports.
 *
-* @param {string} code - source to be transformed
-* @param {string} id - module id
-* @returns {(null|Object)} transformed source or null if no transformation was performed
+* @param code - source to be transformed
+* @param id - module id
+* @returns transformed source or null if no transformation was performed
 */
 function transform( code: string, id: string ): null|{ code: string, map: SourceMap } {
-	if ( !SET_EXPORT_REGEX.test( code ) ) {
+	if ( !SET_EXPORT_REGEX.test( code ) && !EXPORTS_COMMENT_REGEX.test( code ) ) {
 		return null;
 	}
-	const exports = [];
+	const destructured: Array<string> = [];
+	const exports: Array<string> = [];
 	const magicString = new MagicString( code );
 	replace( code, SET_EXPORT_REGEX, transformExport );
-	if ( exports.length === 0 ) {
+	replace( code, EXPORTS_COMMENT_REGEX, transformExportsComment );
+	let changed = false;
+	if ( exports.length > 0 ) {
+		magicString.append( '\nexport { ' + exports.join( ', ' ) + '};' );
+		changed = true;
+	}
+	else if ( destructured.length > 0 ) {
+		magicString.append( destructured.join( '\n' ) );
+		changed = true;
+	}
+	if ( !changed ) {
 		return null;
 	}
-	magicString.append( '\nexport { ' + exports.join( ', ' ) + '};' );
 	return {
 		'code': magicString.toString(),
 		'map': magicString.generateMap()
@@ -58,14 +69,34 @@ function transform( code: string, id: string ): null|{ code: string, map: Source
 	* Transform an export to an ESM named export.
 	*
 	* @private
-	* @param {string} str - matched string
-	* @param {string} namespace - package namespace
-	* @param {string} exportName - exported name
-	* @param {string} identifier - exported identifier
-	* @returns {string} transformed export statement
+	* @param str - matched string
+	* @param namespace - package namespace
+	* @param exportName - exported name
+	* @param identifier - exported identifier
+	* @returns matched string
 	*/
 	function transformExport( str: string, namespace: string, exportName: string, identifier: string ): string {
 		exports.push( identifier + ' as ' + exportName );
+		return str;
+	}
+	
+	/**
+	* Transform an exports comment to an ESM named export.
+	* 
+	* @private
+	* @param str - matched string
+	* @param json - JSON object string mapping exported names to `object.property` expressions
+	* @returns matched string
+	*/
+	function transformExportsComment( str: string, json: string ): string {
+		const parsed = JSON.parse( json );
+		for ( const key in parsed ) {
+			const value = parsed[ key ];
+			if ( typeof value === 'string' && value.includes( '.' ) ) {
+				const [ main, name ] = value.split( '.' );
+				destructured.push( `export const { ${name} as ${key} } = ${main};` );
+			}
+		}
 		return str;
 	}
 }
