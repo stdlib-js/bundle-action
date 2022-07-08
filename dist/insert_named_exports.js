@@ -87,7 +87,7 @@ function transform(code, id) {
             const value = parsed[key];
             if (typeof value === 'string' && value.includes('.')) {
                 const [main, name] = value.split('.');
-                destructured.push(`export const { ${name} as ${key} } = ${main};`);
+                destructured.push(`export const { ${name}: ${key} } = ${main};`);
             }
         }
         return str;
