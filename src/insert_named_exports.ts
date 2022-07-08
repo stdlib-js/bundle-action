@@ -54,7 +54,7 @@ function transform( code: string, id: string ): null|{ code: string, map: Source
 		changed = true;
 	}
 	else if ( destructured.length > 0 ) {
-		magicString.append( destructured.join( '\n' ) );
+		magicString.append( '\n'+destructured.join( '\n' ) );
 		changed = true;
 	}
 	if ( !changed ) {
