@@ -27,6 +27,7 @@
         "@rollup/plugin-json": "^4.1.0",
         "@rollup/plugin-node-resolve": "^13.3.0",
         "@stdlib/string-replace": "^0.0.10",
+        "axios": "^0.27.2",
         "magic-string": "^0.26.2",
         "rollup": "^2.75.7",
         "rollup-plugin-analyzer": "^4.0.0",
