@@ -22,6 +22,7 @@ import process from 'process';
 import { execSync as shell } from 'child_process';
 import path from 'path';
 import fs from 'fs';
+import axios from 'axios';
 import { getInput, setFailed, summary } from '@actions/core';
 import { context } from '@actions/github';
 import { InputOptions, OutputOptions, rollup } from 'rollup';
@@ -55,12 +56,22 @@ if ( !alias ) {
 }
 const esmPlugin =  {
 	name: 'rollup-plugin-esm-url-plugin',
-	resolveId( pkg ) {
+	async resolveId( pkg ) {
 		if ( pkg.startsWith( '@stdlib' ) ) {
-			const version = '@esm'; 
 			pkg = replace( pkg, '@stdlib/', '' ); // e.g., `@stdlib/math/base` -> `math/base`
 			pkg = replace( pkg, '/', '-' ); // e.g., `math/base/special/gamma` -> `math-base-special-gamma`
-			const url = 'https://cdn.jsdelivr.net/gh/stdlib-js/' + pkg + version + '/index.mjs';
+			const slug = 'stdlib-js/' + pkg;
+			
+			// Make request to GitHub API to get the latest tag for the specified package:
+			const res = await axios.get( `https://api.github.com/repos/${slug}/tags` );
+			const tag = ( res.data || [] ).find( elem => elem.name.endsWith( '-esm' ) );
+			let version;
+			if ( !tag ) {
+				version = '@esm';
+			} else {
+				version = '@' + tag.name.replace( '-esm', '' );
+			}
+			const url = 'https://cdn.jsdelivr.net/gh/' + slug + version + '/index.mjs';			
 			return {
 				id: url,
 				external: true

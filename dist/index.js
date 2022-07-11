@@ -25,6 +25,7 @@ const process_1 = __importDefault(require("process"));
 const child_process_1 = require("child_process");
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
+const axios_1 = __importDefault(require("axios"));
 const core_1 = require("@actions/core");
 const github_1 = require("@actions/github");
 const rollup_1 = require("rollup");
@@ -55,12 +56,22 @@ if (!alias) {
 }
 const esmPlugin = {
     name: 'rollup-plugin-esm-url-plugin',
-    resolveId(pkg) {
+    async resolveId(pkg) {
         if (pkg.startsWith('@stdlib')) {
-            const version = '@esm';
             pkg = (0, string_replace_1.default)(pkg, '@stdlib/', ''); // e.g., `@stdlib/math/base` -> `math/base`
             pkg = (0, string_replace_1.default)(pkg, '/', '-'); // e.g., `math/base/special/gamma` -> `math-base-special-gamma`
-            const url = 'https://cdn.jsdelivr.net/gh/stdlib-js/' + pkg + version + '/index.mjs';
+            const slug = 'stdlib-js/' + pkg;
+            // Make request to GitHub API to get the latest tag for the specified package:
+            const res = await axios_1.default.get(`https://api.github.com/repos/${slug}/tags`);
+            const tag = (res.data || []).find(elem => elem.name.endsWith('-esm'));
+            let version;
+            if (!tag) {
+                version = '@esm';
+            }
+            else {
+                version = '@' + tag.name.replace('-esm', '');
+            }
+            const url = 'https://cdn.jsdelivr.net/gh/' + slug + version + '/index.mjs';
             return {
                 id: url,
                 external: true
