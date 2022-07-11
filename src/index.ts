@@ -69,7 +69,7 @@ const esmPlugin =  {
 			if ( !tag ) {
 				version = '@esm';
 			} else {
-				version = '@' + tag.name.replace( '-esm', '' );
+				version = '@' + tag.name;
 			}
 			const url = 'https://cdn.jsdelivr.net/gh/' + slug + version + '/index.mjs';			
 			return {
