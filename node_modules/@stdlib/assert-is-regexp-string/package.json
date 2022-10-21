@@ -1,6 +1,6 @@
 {
   "name": "@stdlib/assert-is-regexp-string",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Test if a value is a regular expression string.",
   "license": "Apache-2.0",
   "author": {
