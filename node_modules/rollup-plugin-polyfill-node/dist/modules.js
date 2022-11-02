@@ -1,7 +1,5 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 const polyfills = require('./polyfills.js');
 
 const EMPTY_PATH = polyfills['empty.js'];
