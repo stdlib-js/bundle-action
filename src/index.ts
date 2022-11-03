@@ -99,10 +99,18 @@ const cwd = process.cwd();
 const pkgJSON = JSON.parse( fs.readFileSync( path.join( cwd, 'package.json' ), 'utf8' ) );
 let entryPoint = pkgJSON.browser ? pkgJSON.browser : './lib/index.js';
 
+// Check whether entry point is an object:
+if ( typeof entryPoint === 'object' ) {
+	if ( entryPoint[ './lib' ] ) {
+		entryPoint = entryPoint[ './lib' ];
+	}
+}
+
 // Strip off the leading `./` from the entry point if present:
 if ( entryPoint.startsWith( './' ) ) {
 	entryPoint = entryPoint.slice( 2 );
 }
+
 
 // FUNCTIONS //
 

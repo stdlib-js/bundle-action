@@ -98,6 +98,12 @@ const LICENSE_COMMENT = '// Copyright (c) ' + CURRENT_YEAR + ' The Stdlib Author
 const cwd = process_1.default.cwd();
 const pkgJSON = JSON.parse(fs_1.default.readFileSync(path_1.default.join(cwd, 'package.json'), 'utf8'));
 let entryPoint = pkgJSON.browser ? pkgJSON.browser : './lib/index.js';
+// Check whether entry point is an object:
+if (typeof entryPoint === 'object') {
+    if (entryPoint['./lib']) {
+        entryPoint = entryPoint['./lib'];
+    }
+}
 // Strip off the leading `./` from the entry point if present:
 if (entryPoint.startsWith('./')) {
     entryPoint = entryPoint.slice(2);
