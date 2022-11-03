@@ -34,6 +34,7 @@ const plugin_node_resolve_1 = require("@rollup/plugin-node-resolve");
 const rollup_plugin_analyzer_1 = __importDefault(require("rollup-plugin-analyzer"));
 const plugin_commonjs_1 = __importDefault(require("@rollup/plugin-commonjs"));
 const rollup_plugin_polyfill_node_1 = __importDefault(require("rollup-plugin-polyfill-node"));
+const plugin_alias_1 = __importDefault(require("@rollup/plugin-alias"));
 const rollup_plugin_shim_1 = __importDefault(require("rollup-plugin-shim"));
 const rollup_plugin_visualizer_1 = require("rollup-plugin-visualizer");
 const string_replace_1 = __importDefault(require("@stdlib/string-replace"));
@@ -181,6 +182,11 @@ function config(target) {
                 plugins: [
                     (0, rollup_plugin_shim_1.default)(general_shims_json_1.default),
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
+                    (0, plugin_alias_1.default)({
+                        entries: [
+                            { find: 'readable-stream', replacement: 'vite-compatible-readable-stream' }
+                        ]
+                    }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: false }),
                     (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove' }),
                     insert_named_exports_1.default,

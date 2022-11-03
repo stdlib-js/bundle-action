@@ -31,6 +31,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import analyze from 'rollup-plugin-analyzer';
 import commonjs from '@rollup/plugin-commonjs';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
+import aliasPlugin from '@rollup/plugin-alias';
 import shim from 'rollup-plugin-shim';
 import { visualizer } from 'rollup-plugin-visualizer';
 import replace from '@stdlib/string-replace';
@@ -185,6 +186,11 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 				plugins: [ 
 					shim( generalShims ),
 					nodePolyfills({ include: null }), 
+					aliasPlugin({
+						entries: [
+							{ find: 'readable-stream', replacement: 'vite-compatible-readable-stream' } 
+						]
+					}),
 					nodeResolve({ preferBuiltins: false, browser: false }), 
 					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove' }), 
 					insertNamedExports,
