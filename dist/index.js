@@ -220,6 +220,11 @@ function config(target) {
                 input: entryPoint,
                 plugins: [
                     (0, rollup_plugin_shim_1.default)(general_shims_json_1.default),
+                    (0, plugin_alias_1.default)({
+                        entries: [
+                            { find: 'readable-stream', replacement: 'stream' }
+                        ]
+                    }),
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: false }),
                     (0, plugin_commonjs_1.default)({ ignoreGlobal: false, transformMixedEsModules: true }),
@@ -241,6 +246,11 @@ function config(target) {
                 input: entryPoint,
                 plugins: [
                     (0, rollup_plugin_shim_1.default)({ ...general_shims_json_1.default, ...browser_shims_json_1.default }),
+                    (0, plugin_alias_1.default)({
+                        entries: [
+                            { find: 'readable-stream', replacement: 'stream' }
+                        ]
+                    }),
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: true }),
                     (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }),
@@ -262,6 +272,11 @@ function config(target) {
                 input: entryPoint,
                 plugins: [
                     (0, rollup_plugin_shim_1.default)({ ...general_shims_json_1.default, ...browser_shims_json_1.default }),
+                    (0, plugin_alias_1.default)({
+                        entries: [
+                            { find: 'readable-stream', replacement: 'stream' }
+                        ]
+                    }),
                     esmPlugin,
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: true }),

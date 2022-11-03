@@ -225,6 +225,11 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 				input: entryPoint,
 				plugins: [ 
 					shim( generalShims ),
+					aliasPlugin({
+						entries: [
+							{ find: 'readable-stream', replacement: 'stream' }
+						]
+					}),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false,  browser: false }), 
 					commonjs({ ignoreGlobal: false, transformMixedEsModules: true }), 
@@ -246,6 +251,11 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 				input: entryPoint,
 				plugins: [ 
 					shim({ ...generalShims, ...browserShims }),
+					aliasPlugin({
+						entries: [
+							{ find: 'readable-stream', replacement: 'stream' }
+						]
+					}),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
 					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }), 
@@ -267,6 +277,11 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 				input: entryPoint,
 				plugins: [ 
 					shim({ ...generalShims, ...browserShims }),
+					aliasPlugin({
+						entries: [
+							{ find: 'readable-stream', replacement: 'stream' }
+						]
+					}),
 					esmPlugin, 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
