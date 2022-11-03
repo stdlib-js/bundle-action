@@ -99,7 +99,7 @@ const cwd = process.cwd();
 const pkgJSON = JSON.parse( fs.readFileSync( path.join( cwd, 'package.json' ), 'utf8' ) );
 let entryPoint = pkgJSON.browser ? pkgJSON.browser : './lib/index.js';
 
-// Check whether entry point is an object:
+// For `browser` object, we need to use a single `browser` field as the entry point:
 if ( typeof entryPoint === 'object' ) {
 	if ( entryPoint[ './lib' ] ) {
 		entryPoint = entryPoint[ './lib' ];
@@ -335,7 +335,7 @@ async function build(): Promise<void> {
 		const bundle = await rollup( inputOptions );
 		const res = await bundle.write( outputOptions );
 		console.log( 'Results:' );
-		console.log( res );
+		console.log( JSON.stringify( res, null, 2 ) );
 		console.log( 'Finished.' );
 	} catch ( err ) {
 		setFailed( err.message );

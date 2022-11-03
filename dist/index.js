@@ -98,7 +98,7 @@ const LICENSE_COMMENT = '// Copyright (c) ' + CURRENT_YEAR + ' The Stdlib Author
 const cwd = process_1.default.cwd();
 const pkgJSON = JSON.parse(fs_1.default.readFileSync(path_1.default.join(cwd, 'package.json'), 'utf8'));
 let entryPoint = pkgJSON.browser ? pkgJSON.browser : './lib/index.js';
-// Check whether entry point is an object:
+// For `browser` object, we need to use a single `browser` field as the entry point:
 if (typeof entryPoint === 'object') {
     if (entryPoint['./lib']) {
         entryPoint = entryPoint['./lib'];
@@ -325,7 +325,7 @@ async function build() {
         const bundle = await (0, rollup_1.rollup)(inputOptions);
         const res = await bundle.write(outputOptions);
         console.log('Results:');
-        console.log(res);
+        console.log(JSON.stringify(res, null, 2));
         console.log('Finished.');
     }
     catch (err) {
