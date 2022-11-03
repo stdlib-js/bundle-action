@@ -184,7 +184,7 @@ function config(target) {
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_alias_1.default)({
                         entries: [
-                            { find: 'readable-stream', replacement: 'vite-compatible-readable-stream' }
+                            { find: 'readable-stream', replacement: path_1.default.join(__dirname, '..', 'node_modules', 'vite-compatible-readable-stream', 'readable-browser.js') }
                         ]
                     }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: false }),

@@ -188,7 +188,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					nodePolyfills({ include: null }), 
 					aliasPlugin({
 						entries: [
-							{ find: 'readable-stream', replacement: 'vite-compatible-readable-stream' } 
+							{ find: 'readable-stream', replacement: path.join( __dirname, '..', 'node_modules', 'vite-compatible-readable-stream', 'readable-browser.js' ) } 
 						]
 					}),
 					nodeResolve({ preferBuiltins: false, browser: false }), 
