@@ -97,16 +97,17 @@ const CURRENT_YEAR = new Date().getFullYear();
 const LICENSE_COMMENT = '// Copyright (c) ' + CURRENT_YEAR + ' The Stdlib Authors. License is Apache-2.0: http://www.apache.org/licenses/LICENSE-2.0';
 const cwd = process_1.default.cwd();
 const pkgJSON = JSON.parse(fs_1.default.readFileSync(path_1.default.join(cwd, 'package.json'), 'utf8'));
-let entryPoint = pkgJSON.browser ? pkgJSON.browser : './lib/index.js';
-// For `browser` object, we need to use a single `browser` field as the entry point:
-if (typeof entryPoint === 'object') {
-    if (entryPoint['./lib']) {
-        entryPoint = entryPoint['./lib'];
+let entryPoint;
+if (typeof pkgJSON.browser === 'object') {
+    if (pkgJSON.browser['./lib']) {
+        entryPoint = pkgJSON.browser['./lib'];
     }
 }
-// Strip off the leading `./` from the entry point if present:
-if (entryPoint.startsWith('./')) {
-    entryPoint = entryPoint.slice(2);
+else if (typeof pkgJSON.browser === 'string') {
+    entryPoint = pkgJSON.browser;
+}
+if (!entryPoint) {
+    entryPoint = './lib/index.js';
 }
 // FUNCTIONS //
 /**
@@ -216,7 +217,7 @@ function config(target) {
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: false }),
                     (0, plugin_commonjs_1.default)({ ignoreGlobal: false, transformMixedEsModules: true }),
-                    (0, insert_named_exports_1.default)({ ignore: [entryPoint] }),
+                    (0, insert_named_exports_1.default)({ ignore: [path_1.default.resolve(cwd, entryPoint)] }),
                     (0, plugin_json_1.default)({ compact: true })
                 ]
             };
@@ -237,7 +238,7 @@ function config(target) {
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: true }),
                     (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }),
-                    (0, insert_named_exports_1.default)({ ignore: [entryPoint] }),
+                    (0, insert_named_exports_1.default)({ ignore: [path_1.default.resolve(cwd, entryPoint)] }),
                     (0, plugin_json_1.default)({ compact: true })
                 ]
             };
