@@ -187,7 +187,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: false }), 
 					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }), 
-					insertNamedExports,
+					insertNamedExports(),
 					json({ compact: true })
 				]
 			};
@@ -210,6 +210,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false,  browser: false }), 
 					commonjs({ ignoreGlobal: false, transformMixedEsModules: true }), 
+					insertNamedExports({ ignore: [ entryPoint ]}),
 					json({ compact: true })
 				]
 			};
@@ -230,6 +231,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
 					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }), 
+					insertNamedExports({ ignore: [ entryPoint ]}),
 					json({ compact: true })
 				]
 			};
@@ -251,7 +253,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
 					commonjs({ ignoreTryCatch: 'remove', transformMixedEsModules: true }), 
-					insertNamedExports,
+					insertNamedExports(),
 					json({ compact: true })
 				]
 			};
