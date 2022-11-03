@@ -31,7 +31,6 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import analyze from 'rollup-plugin-analyzer';
 import commonjs from '@rollup/plugin-commonjs';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
-import aliasPlugin from '@rollup/plugin-alias';
 import shim from 'rollup-plugin-shim';
 import { visualizer } from 'rollup-plugin-visualizer';
 import replace from '@stdlib/string-replace';
@@ -186,11 +185,6 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 				plugins: [ 
 					shim( generalShims ),
 					nodePolyfills({ include: null }), 
-					aliasPlugin({
-						entries: [
-							{ find: 'readable-stream', replacement: path.join( __dirname, '..', 'node_modules', 'vite-compatible-readable-stream', 'readable-browser.js' ) } 
-						]
-					}),
 					nodeResolve({ preferBuiltins: false, browser: false }), 
 					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove' }), 
 					insertNamedExports,
@@ -314,6 +308,8 @@ async function build(): Promise<void> {
 		's/module\\.exports\\s*=\\s*/export default /g', // Replace `module.exports =` with `export default`...
 		';',
 		's/setReadOnly\\(\\s*([a-zA-Z0-9_]+)\\s*,\\s*\'([a-zA-Z0-9_]+)\',\\s*require\\(\\s*\'([^\']+)\'\\s*\\)\\s*\\);/import \\2 from \'\\3\';\\nsetReadOnly( \\1, \'\\2\', \\2 );/g', // Replace `setReadOnly( foo, 'bar', require( 'baz' ) );` with `import bar from 'baz';\nsetReadOnly( foo, 'bar', bar );`...
+		';',
+		's/var Readable\\s*=\\s*require\\(\\s*\'readable-stream\'\\s*\\)\\.Readable;/import readableStream from \'readable-stream\'; const Readable = readableStream.Readable;/g',
 		';',
 		's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*([^)]+)\\s*\\);/import \\1 from \\2;/g', // Replace `var foo = require( 'bar' );` with `import foo from 'bar';`...
 		';',

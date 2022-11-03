@@ -34,7 +34,6 @@ const plugin_node_resolve_1 = require("@rollup/plugin-node-resolve");
 const rollup_plugin_analyzer_1 = __importDefault(require("rollup-plugin-analyzer"));
 const plugin_commonjs_1 = __importDefault(require("@rollup/plugin-commonjs"));
 const rollup_plugin_polyfill_node_1 = __importDefault(require("rollup-plugin-polyfill-node"));
-const plugin_alias_1 = __importDefault(require("@rollup/plugin-alias"));
 const rollup_plugin_shim_1 = __importDefault(require("rollup-plugin-shim"));
 const rollup_plugin_visualizer_1 = require("rollup-plugin-visualizer");
 const string_replace_1 = __importDefault(require("@stdlib/string-replace"));
@@ -182,11 +181,6 @@ function config(target) {
                 plugins: [
                     (0, rollup_plugin_shim_1.default)(general_shims_json_1.default),
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
-                    (0, plugin_alias_1.default)({
-                        entries: [
-                            { find: 'readable-stream', replacement: path_1.default.join(__dirname, '..', 'node_modules', 'vite-compatible-readable-stream', 'readable-browser.js') }
-                        ]
-                    }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: false }),
                     (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove' }),
                     insert_named_exports_1.default,
@@ -307,6 +301,8 @@ async function build() {
         's/module\\.exports\\s*=\\s*/export default /g',
         ';',
         's/setReadOnly\\(\\s*([a-zA-Z0-9_]+)\\s*,\\s*\'([a-zA-Z0-9_]+)\',\\s*require\\(\\s*\'([^\']+)\'\\s*\\)\\s*\\);/import \\2 from \'\\3\';\\nsetReadOnly( \\1, \'\\2\', \\2 );/g',
+        ';',
+        's/var Readable\\s*=\\s*require\\(\\s*\'readable-stream\'\\s*\\)\\.Readable;/import readableStream from \'readable-stream\'; const Readable = readableStream.Readable;/g',
         ';',
         's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*([^)]+)\\s*\\);/import \\1 from \\2;/g',
         ';',
