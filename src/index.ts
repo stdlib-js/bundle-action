@@ -219,7 +219,8 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 				format: 'umd',
 				banner: LICENSE_COMMENT,
 				name: alias,
-				sourcemap: true
+				sourcemap: true,
+				exports: 'default'
 			};
 		break;
 		case 'umd-browser':
@@ -239,7 +240,8 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 				format: 'umd',
 				banner: LICENSE_COMMENT,
 				name: alias,
-				sourcemap: true
+				sourcemap: true,
+				exports: 'default'
 			};
 		break;
 		case 'esm':
