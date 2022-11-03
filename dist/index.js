@@ -302,8 +302,6 @@ async function build() {
         ';',
         's/setReadOnly\\(\\s*([a-zA-Z0-9_]+)\\s*,\\s*\'([a-zA-Z0-9_]+)\',\\s*require\\(\\s*\'([^\']+)\'\\s*\\)\\s*\\);/import \\2 from \'\\3\';\\nsetReadOnly( \\1, \'\\2\', \\2 );/g',
         ';',
-        's/var Readable\\s*=\\s*require\\(\\s*\'readable-stream\'\\s*\\)\\.Readable;/import readableStream from \'readable-stream\'; const Readable = readableStream.Readable;/g',
-        ';',
         's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*([^)]+)\\s*\\);/import \\1 from \\2;/g',
         ';',
         's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*([^)]+)\\s*\\)\\.([a-zA-Z0-9]+);/import { \\3 as \\1 } from \\2;/g',
