@@ -182,7 +182,7 @@ function config(target) {
                     (0, rollup_plugin_shim_1.default)(general_shims_json_1.default),
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: false }),
-                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove' }),
+                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }),
                     insert_named_exports_1.default,
                     (0, plugin_json_1.default)({ compact: true }),
                 ]
@@ -205,7 +205,7 @@ function config(target) {
                     (0, rollup_plugin_shim_1.default)(general_shims_json_1.default),
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: false }),
-                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false }),
+                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, transformMixedEsModules: true }),
                     insert_named_exports_1.default,
                     (0, plugin_json_1.default)({ compact: true })
                 ]
@@ -226,7 +226,7 @@ function config(target) {
                     (0, rollup_plugin_shim_1.default)({ ...general_shims_json_1.default, ...browser_shims_json_1.default }),
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: true }),
-                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove' }),
+                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }),
                     insert_named_exports_1.default,
                     (0, plugin_json_1.default)({ compact: true })
                 ]
@@ -248,7 +248,7 @@ function config(target) {
                     esmPlugin,
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: true }),
-                    (0, plugin_commonjs_1.default)({ ignoreTryCatch: 'remove' }),
+                    (0, plugin_commonjs_1.default)({ ignoreTryCatch: 'remove', transformMixedEsModules: true }),
                     insert_named_exports_1.default,
                     (0, plugin_json_1.default)({ compact: true })
                 ]
@@ -304,9 +304,9 @@ async function build() {
         ';',
         's/setReadOnly\\(\\s*([a-zA-Z0-9_]+)\\s*,\\s*\'([a-zA-Z0-9_]+)\',\\s*require\\(\\s*\'([^\']+)\'\\s*\\)\\s*\\);/import \\2 from \'\\3\';\\nsetReadOnly( \\1, \'\\2\', \\2 );/g',
         ';',
-        's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*([^)]+)\\s*\\);/import \\1 from \\2;/g',
+        's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*(\'[@.][^)]+)\\s*\\);/import \\1 from \\2;/g',
         ';',
-        's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*([^)]+)\\s*\\)\\.([a-zA-Z0-9]+);/import { \\3 as \\1 } from \\2;/g',
+        's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*(\'[@.][^)]+)\\s*\\)\\.([a-zA-Z0-9]+);/import { \\3 as \\1 } from \\2;/g',
         '"'
     ].join('');
     (0, child_process_1.execSync)(command);

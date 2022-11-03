@@ -186,7 +186,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					shim( generalShims ),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: false }), 
-					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove' }), 
+					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }), 
 					insertNamedExports,
 					json({ compact: true }),
 				]
@@ -209,7 +209,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					shim( generalShims ),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false,  browser: false }), 
-					commonjs({ ignoreGlobal: false }), 
+					commonjs({ ignoreGlobal: false, transformMixedEsModules: true }), 
 					insertNamedExports,
 					json({ compact: true })
 				]
@@ -230,7 +230,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					shim({ ...generalShims, ...browserShims }),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
-					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove' }), 
+					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }), 
 					insertNamedExports,
 					json({ compact: true })
 				]
@@ -252,7 +252,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					esmPlugin, 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
-					commonjs({ ignoreTryCatch: 'remove' }), 
+					commonjs({ ignoreTryCatch: 'remove', transformMixedEsModules: true }), 
 					insertNamedExports,
 					json({ compact: true })
 				]
@@ -311,9 +311,9 @@ async function build(): Promise<void> {
 		';',
 		's/setReadOnly\\(\\s*([a-zA-Z0-9_]+)\\s*,\\s*\'([a-zA-Z0-9_]+)\',\\s*require\\(\\s*\'([^\']+)\'\\s*\\)\\s*\\);/import \\2 from \'\\3\';\\nsetReadOnly( \\1, \'\\2\', \\2 );/g', // Replace `setReadOnly( foo, 'bar', require( 'baz' ) );` with `import bar from 'baz';\nsetReadOnly( foo, 'bar', bar );`...
 		';',
-		's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*([^)]+)\\s*\\);/import \\1 from \\2;/g', // Replace `var foo = require( 'bar' );` with `import foo from 'bar';`...
+		's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*(\'[@.][^)]+)\\s*\\);/import \\1 from \\2;/g',
 		';',
-		's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*([^)]+)\\s*\\)\\.([a-zA-Z0-9]+);/import { \\3 as \\1 } from \\2;/g', // Replace `var foo = require( 'bar' ).baz;` with `import { baz as foo } from 'bar';`...
+		's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*(\'[@.][^)]+)\\s*\\)\\.([a-zA-Z0-9]+);/import { \\3 as \\1 } from \\2;/g',
 		'"'
 	].join( '' );
 	shell( command );
