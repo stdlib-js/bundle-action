@@ -27,6 +27,7 @@ import { getInput, setFailed, summary } from '@actions/core';
 import { context } from '@actions/github';
 import { InputOptions, OutputOptions, rollup } from 'rollup';
 import { terser } from 'rollup-plugin-terser';
+import aliasPlugin from '@rollup/plugin-alias';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import analyze from 'rollup-plugin-analyzer';
 import commonjs from '@rollup/plugin-commonjs';
@@ -196,6 +197,11 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 				input: entryPoint,
 				plugins: [ 
 					shim( generalShims ),
+					aliasPlugin({
+						entries: [
+							{ find: 'readable-stream', replacement: 'stream' }
+						]
+					}),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: false }), 
 					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }), 

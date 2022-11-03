@@ -30,6 +30,7 @@ const core_1 = require("@actions/core");
 const github_1 = require("@actions/github");
 const rollup_1 = require("rollup");
 const rollup_plugin_terser_1 = require("rollup-plugin-terser");
+const plugin_alias_1 = __importDefault(require("@rollup/plugin-alias"));
 const plugin_node_resolve_1 = require("@rollup/plugin-node-resolve");
 const rollup_plugin_analyzer_1 = __importDefault(require("rollup-plugin-analyzer"));
 const plugin_commonjs_1 = __importDefault(require("@rollup/plugin-commonjs"));
@@ -191,6 +192,11 @@ function config(target) {
                 input: entryPoint,
                 plugins: [
                     (0, rollup_plugin_shim_1.default)(general_shims_json_1.default),
+                    (0, plugin_alias_1.default)({
+                        entries: [
+                            { find: 'readable-stream', replacement: 'stream' }
+                        ]
+                    }),
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: false }),
                     (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }),
