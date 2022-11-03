@@ -27,6 +27,13 @@ const string_replace_1 = __importDefault(require("@stdlib/string-replace"));
 const SET_EXPORT_REGEX = /^setReadOnly\s*\(\s*(\w+)\s*,\s*['"](\w+)['"]\s*,\s*([A-Za-z_$][\w$]*)\s*\)\s*;\s*$/mg;
 const EXPORTS_COMMENT_REGEX = /^\s*\/\/\s*exports:\s*(\{[^}]*\})\s*$/m;
 // MAIN //
+/**
+* Returns a plugin to transform CommonJS require statements to ES module imports.
+*
+* @param options - options
+* @param options.ignore - list of modules to ignore (default: [])
+* @returns plugin
+*/
 function pluginFactory({ ignore = [] } = {}) {
     const plugin = {
         'name': 'rollup-plugin-insert-named-exports',

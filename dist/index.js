@@ -97,7 +97,11 @@ const CURRENT_YEAR = new Date().getFullYear();
 const LICENSE_COMMENT = '// Copyright (c) ' + CURRENT_YEAR + ' The Stdlib Authors. License is Apache-2.0: http://www.apache.org/licenses/LICENSE-2.0';
 const cwd = process_1.default.cwd();
 const pkgJSON = JSON.parse(fs_1.default.readFileSync(path_1.default.join(cwd, 'package.json'), 'utf8'));
-const entryPoint = pkgJSON.browser ? pkgJSON.browser : './lib/index.js';
+let entryPoint = pkgJSON.browser ? pkgJSON.browser : './lib/index.js';
+// Strip off the leading `./` from the entry point if present:
+if (entryPoint.startsWith('./')) {
+    entryPoint = entryPoint.slice(2);
+}
 // FUNCTIONS //
 /**
 * Callback invoked with results of bundle results analysis.

@@ -32,6 +32,13 @@ const EXPORTS_COMMENT_REGEX = /^\s*\/\/\s*exports:\s*(\{[^}]*\})\s*$/m;
 
 // MAIN //
 
+/**
+* Returns a plugin to transform CommonJS require statements to ES module imports.
+* 
+* @param options - options
+* @param options.ignore - list of modules to ignore (default: [])
+* @returns plugin
+*/
 function pluginFactory({ ignore = [] } = {}) {
 	const plugin = {
 		'name': 'rollup-plugin-insert-named-exports',
