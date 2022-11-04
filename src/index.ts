@@ -230,7 +230,6 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 							{ find: 'readable-stream', replacement: 'stream' }
 						]
 					}),
-					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false,  browser: false }), 
 					commonjs({ ignoreGlobal: false, transformMixedEsModules: true }), 
 					insertNamedExports({ ignore: [ path.resolve( cwd, entryPoint ) ]}),
