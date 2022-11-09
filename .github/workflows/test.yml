@@ -64,9 +64,23 @@ jobs:
         run: |
           npm install || npm install || npm install
         timeout-minutes: 15
-      - name: Create UMD bundle
-        id: umd-bundle
+      - name: Create bundle
+        id: bundle
         uses: stdlib-js/bundle-action@main
         with:
           target: ${{ github.event.inputs.target }}
           minify: ${{ github.event.inputs.minify }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: bundle-artifact
+          path: |
+            index.js
+            index.js.map
+            browser.js
+            browser.js.map
+            index.d.ts
+            index.mjs
+            index.mjs.map
+            mod.d.ts
+            mod.js
+            mod.js.map
