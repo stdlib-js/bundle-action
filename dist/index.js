@@ -55,6 +55,7 @@ if (!alias) {
     // Case: No alias specified, so use the npm package name:
     alias = pkg;
 }
+const TAG_FOR_SLUG = {};
 const esmPlugin = {
     name: 'rollup-plugin-esm-url-plugin',
     async resolveId(pkg) {
@@ -62,16 +63,19 @@ const esmPlugin = {
             pkg = (0, string_replace_1.default)(pkg, '@stdlib/', ''); // e.g., `@stdlib/math/base` -> `math/base`
             pkg = (0, string_replace_1.default)(pkg, '/', '-'); // e.g., `math/base/special/gamma` -> `math-base-special-gamma`
             const slug = 'stdlib-js/' + pkg;
-            // Make request to GitHub API to get the latest tag for the specified package:
-            let tag;
-            try {
-                const res = await axios_1.default.get(`https://api.github.com/repos/${slug}/tags`);
-                tag = (res.data || []).find(elem => elem.name.endsWith('-esm'));
-            }
-            catch (err) {
-                (0, core_1.warning)(`Encountered an error when attempting to resolve the latest ESM tag for package "${pkg}": ${err.message}`);
+            if (!(slug in TAG_FOR_SLUG)) {
+                // Make request to GitHub API to get the latest tag for the specified package:
+                try {
+                    const res = await axios_1.default.get(`https://api.github.com/repos/${slug}/tags`);
+                    const tag = (res.data || []).find(elem => elem.name.endsWith('-esm'));
+                    TAG_FOR_SLUG[slug] = tag;
+                }
+                catch (err) {
+                    (0, core_1.warning)(`Encountered an error when attempting to resolve the latest ESM tag for package "${pkg}": ${err.message}`);
+                }
             }
             let version;
+            const tag = TAG_FOR_SLUG[slug];
             if (!tag) {
                 (0, core_1.info)(`Unable to resolve the latest ESM tag for package "${pkg}". Loading the latest code on the "esm" branch instead.`);
                 version = '@esm';
