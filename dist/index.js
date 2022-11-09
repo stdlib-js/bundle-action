@@ -73,9 +73,11 @@ const esmPlugin = {
             }
             let version;
             if (!tag) {
+                (0, core_1.info)(`Unable to resolve the latest ESM tag for package "${pkg}". Loading the latest code on the "esm" branch instead.`);
                 version = '@esm';
             }
             else {
+                (0, core_1.info)(`Resolved latest ESM tag for package "${pkg}" to "${tag.name}".`);
                 version = '@' + tag.name;
             }
             const url = 'https://cdn.jsdelivr.net/gh/' + slug + version + '/index.mjs';
