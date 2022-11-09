@@ -23,7 +23,7 @@ import { execSync as shell } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import axios from 'axios';
-import { getInput, setFailed, summary } from '@actions/core';
+import { getInput, setFailed, summary, info, warning } from '@actions/core';
 import { context } from '@actions/github';
 import { InputOptions, OutputOptions, rollup } from 'rollup';
 import { terser } from 'rollup-plugin-terser';
@@ -64,8 +64,13 @@ const esmPlugin =  {
 			const slug = 'stdlib-js/' + pkg;
 			
 			// Make request to GitHub API to get the latest tag for the specified package:
-			const res = await axios.get( `https://api.github.com/repos/${slug}/tags` );
-			const tag = ( res.data || [] ).find( elem => elem.name.endsWith( '-esm' ) );
+			let tag;
+			try { 
+				const res = await axios.get( `https://api.github.com/repos/${slug}/tags` );
+				tag = ( res.data || [] ).find( elem => elem.name.endsWith( '-esm' ) );
+			} catch ( err ) {
+				warning( `Encountered an error when attempting to resolve the latest ESM tag for package "${pkg}": ${err.message}` );
+			}
 			let version;
 			if ( !tag ) {
 				version = '@esm';
@@ -354,9 +359,9 @@ async function build(): Promise<void> {
 	try {
 		const bundle = await rollup( inputOptions );
 		const res = await bundle.write( outputOptions );
-		console.log( 'Results:' );
-		console.log( JSON.stringify( res, null, 2 ) );
-		console.log( 'Finished.' );
+		info( 'Results:' );
+		info( JSON.stringify( res, null, 2 ) );
+		info( 'Finished.' );
 	} catch ( err ) {
 		setFailed( err.message );
 	}

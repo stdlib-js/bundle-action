@@ -63,8 +63,14 @@ const esmPlugin = {
             pkg = (0, string_replace_1.default)(pkg, '/', '-'); // e.g., `math/base/special/gamma` -> `math-base-special-gamma`
             const slug = 'stdlib-js/' + pkg;
             // Make request to GitHub API to get the latest tag for the specified package:
-            const res = await axios_1.default.get(`https://api.github.com/repos/${slug}/tags`);
-            const tag = (res.data || []).find(elem => elem.name.endsWith('-esm'));
+            let tag;
+            try {
+                const res = await axios_1.default.get(`https://api.github.com/repos/${slug}/tags`);
+                tag = (res.data || []).find(elem => elem.name.endsWith('-esm'));
+            }
+            catch (err) {
+                (0, core_1.warning)(`Encountered an error when attempting to resolve the latest ESM tag for package "${pkg}": ${err.message}`);
+            }
             let version;
             if (!tag) {
                 version = '@esm';
@@ -345,9 +351,9 @@ async function build() {
     try {
         const bundle = await (0, rollup_1.rollup)(inputOptions);
         const res = await bundle.write(outputOptions);
-        console.log('Results:');
-        console.log(JSON.stringify(res, null, 2));
-        console.log('Finished.');
+        (0, core_1.info)('Results:');
+        (0, core_1.info)(JSON.stringify(res, null, 2));
+        (0, core_1.info)('Finished.');
     }
     catch (err) {
         (0, core_1.setFailed)(err.message);
