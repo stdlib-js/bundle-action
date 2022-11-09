@@ -22,6 +22,7 @@ import process from 'process';
 import { execSync as shell } from 'child_process';
 import path from 'path';
 import fs from 'fs';
+import { builtinModules } from 'module';
 import axios from 'axios';
 import { getInput, setFailed, summary, info, warning } from '@actions/core';
 import { context } from '@actions/github';
@@ -244,7 +245,8 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					commonjs({ ignoreGlobal: false, transformMixedEsModules: true }), 
 					insertNamedExports({ ignore: [ path.resolve( cwd, entryPoint ) ]}),
 					json({ compact: true })
-				]
+				],
+				external: builtinModules
 			};
 			outputOptions = {
 				file: './umd/index.js',

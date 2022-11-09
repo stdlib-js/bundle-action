@@ -25,6 +25,7 @@ const process_1 = __importDefault(require("process"));
 const child_process_1 = require("child_process");
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
+const module_1 = require("module");
 const axios_1 = __importDefault(require("axios"));
 const core_1 = require("@actions/core");
 const github_1 = require("@actions/github");
@@ -241,7 +242,8 @@ function config(target) {
                     (0, plugin_commonjs_1.default)({ ignoreGlobal: false, transformMixedEsModules: true }),
                     (0, insert_named_exports_1.default)({ ignore: [path_1.default.resolve(cwd, entryPoint)] }),
                     (0, plugin_json_1.default)({ compact: true })
-                ]
+                ],
+                external: module_1.builtinModules
             };
             outputOptions = {
                 file: './umd/index.js',
