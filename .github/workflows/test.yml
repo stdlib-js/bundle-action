@@ -22,7 +22,28 @@ name: Bundle
 
 # Workflow triggers:
 on:
+  # Allow the workflow to be manually run:
   workflow_dispatch:
+    inputs:
+      repository:
+        description: 'Repository to bundle'
+        default: stdlib-js/utils-keys
+      branch:
+        description: 'Target branch'
+        default: production
+      minify:
+        type: boolean
+        description: 'Minify bundle'
+        default: true
+      target:
+        type: choice
+        description: 'Bundle target'
+        default: umd-browser
+        options:
+          - umd-browser
+          - umd-node
+          - esm
+          - deno
 
 # Workflow jobs:
 jobs:
@@ -32,8 +53,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          repository: 'Planeshifter/utils-keys'
-          branch: production
+          repository: ${{ github.event.inputs.repository }}
+          branch: ${{ github.event.inputs.branch }}
       - uses: actions/setup-node@v2
         with:
           node-version: 16
@@ -47,5 +68,5 @@ jobs:
         id: umd-bundle
         uses: stdlib-js/bundle-action@main
         with:
-          target: 'umd-browser'
-          minify: true
+          target: ${{ github.event.inputs.target }}
+          minify: ${{ github.event.inputs.minify }}
