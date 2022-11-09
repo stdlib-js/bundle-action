@@ -28,7 +28,7 @@ on:
       repository:
         description: 'Repository to bundle'
         default: stdlib-js/utils-keys
-      branch:
+      ref:
         description: 'Target branch'
         default: production
       minify:
@@ -51,11 +51,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: ${{ github.event.inputs.repository }}
-          branch: ${{ github.event.inputs.branch }}
-      - uses: actions/setup-node@v2
+          ref: ${{ github.event.inputs.ref }}
+      - uses: actions/setup-node@v3
         with:
           node-version: 16
         timeout-minutes: 5
@@ -74,13 +74,13 @@ jobs:
         with:
           name: bundle-artifact
           path: |
-            index.js
-            index.js.map
-            browser.js
-            browser.js.map
-            index.d.ts
-            index.mjs
-            index.mjs.map
-            mod.d.ts
-            mod.js
-            mod.js.map
+            umd/index.js
+            umd/index.js.map
+            umd/browser.js
+            umd/browser.js.map
+            esm/index.d.ts
+            esm/index.mjs
+            esm/index.mjs.map
+            deno/mod.d.ts
+            deno/mod.js
+            deno/mod.js.map
