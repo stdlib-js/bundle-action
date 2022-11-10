@@ -21,6 +21,7 @@
 // MODULES //
 
 import MagicString, { SourceMap } from 'magic-string';
+import { info } from '@actions/core';
 import replace from '@stdlib/string-replace';
 
 
@@ -54,6 +55,7 @@ function pluginFactory({ ignore = [] } = {}) {
 	* @returns transformed source or null if no transformation was performed
 	*/
 	function transform( code: string, id: string ): null|{ code: string, map: SourceMap } {
+		info( `Processing module with identifier ${id}...` );
 		if ( !SET_EXPORT_REGEX.test( code ) && !EXPORTS_COMMENT_REGEX.test( code ) ) {
 			return null;
 		}
@@ -93,6 +95,7 @@ function pluginFactory({ ignore = [] } = {}) {
 		* @returns matched string
 		*/
 		function transformExport( str: string, namespace: string, exportName: string, identifier: string ): string {
+			info( `Transforming namespace export ${exportName}...` );
 			if ( exportName === 'setReadOnly' ) {
 				exports.push( exportName );
 			} else {
