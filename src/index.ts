@@ -215,7 +215,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					}),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: false }), 
-					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: true }), 
+					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: false }), 
 					insertNamedExports(),
 					json({ compact: true })
 				]
@@ -242,7 +242,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 						]
 					}),
 					nodeResolve({ preferBuiltins: false,  browser: false }), 
-					commonjs({ ignoreGlobal: false, transformMixedEsModules: true, requireReturnsDefault: true }), 
+					commonjs({ ignoreGlobal: false, transformMixedEsModules: true, requireReturnsDefault: false }), 
 					insertNamedExports({ ignore: [ path.resolve( cwd, entryPoint ) ]}),
 					json({ compact: true })
 				],
@@ -269,7 +269,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					}),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
-					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: true }), 
+					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: false }), 
 					insertNamedExports({ ignore: [ path.resolve( cwd, entryPoint ) ]}),
 					json({ compact: true })
 				]
@@ -296,7 +296,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					esmPlugin, 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
-					commonjs({ ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: true }), 
+					commonjs({ ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: false }), 
 					insertNamedExports(),
 					json({ compact: true })
 				]
@@ -347,7 +347,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 */
 async function build(): Promise<void> {
 	const command = [
-		'find ./ -type f -name \'*.[jt]s\' \\( -path "./lib/*" -o -path "./node_modules/@stdlib/*/lib/**" \\) -print0 ', // Find all JavaScript and TypeScript files in the destination directory and print their full names to standard output...
+		'find ./ -type f -name \'*.[jt]s\' \\( -not -path "./node_modules/**" -o -path "./node_modules/@stdlib/*/lib/**" \\) -print0 ', // Find all JavaScript and TypeScript files in the destination directory and print their full names to standard output...
 		'| xargs -0 ', // Convert standard input to the arguments for following `sed` command...
 		'sed -Ei ', // Edit files in-place without creating a backup...
 		'"',

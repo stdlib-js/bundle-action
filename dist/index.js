@@ -212,7 +212,7 @@ function config(target) {
                     }),
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: false }),
-                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: true }),
+                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: false }),
                     (0, insert_named_exports_1.default)(),
                     (0, plugin_json_1.default)({ compact: true })
                 ]
@@ -239,7 +239,7 @@ function config(target) {
                         ]
                     }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: false }),
-                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, transformMixedEsModules: true, requireReturnsDefault: true }),
+                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, transformMixedEsModules: true, requireReturnsDefault: false }),
                     (0, insert_named_exports_1.default)({ ignore: [path_1.default.resolve(cwd, entryPoint)] }),
                     (0, plugin_json_1.default)({ compact: true })
                 ],
@@ -266,7 +266,7 @@ function config(target) {
                     }),
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: true }),
-                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: true }),
+                    (0, plugin_commonjs_1.default)({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: false }),
                     (0, insert_named_exports_1.default)({ ignore: [path_1.default.resolve(cwd, entryPoint)] }),
                     (0, plugin_json_1.default)({ compact: true })
                 ]
@@ -293,7 +293,7 @@ function config(target) {
                     esmPlugin,
                     (0, rollup_plugin_polyfill_node_1.default)({ include: null }),
                     (0, plugin_node_resolve_1.nodeResolve)({ preferBuiltins: false, browser: true }),
-                    (0, plugin_commonjs_1.default)({ ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: true }),
+                    (0, plugin_commonjs_1.default)({ ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: false }),
                     (0, insert_named_exports_1.default)(),
                     (0, plugin_json_1.default)({ compact: true })
                 ]
@@ -341,7 +341,7 @@ function config(target) {
 */
 async function build() {
     const command = [
-        'find ./ -type f -name \'*.[jt]s\' \\( -path "./lib/*" -o -path "./node_modules/@stdlib/*/lib/**" \\) -print0 ',
+        'find ./ -type f -name \'*.[jt]s\' \\( -not -path "./node_modules/**" -o -path "./node_modules/@stdlib/*/lib/**" \\) -print0 ',
         '| xargs -0 ',
         'sed -Ei ',
         '"',
