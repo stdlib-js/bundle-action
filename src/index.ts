@@ -242,7 +242,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 						]
 					}),
 					nodeResolve({ preferBuiltins: false,  browser: false }), 
-					commonjs({ ignoreGlobal: false, transformMixedEsModules: true, requireReturnsDefault: false }), 
+					commonjs({ ignoreGlobal: false, transformMixedEsModules: true }), 
 					insertNamedExports({ ignore: [ path.resolve( cwd, entryPoint ) ]}),
 					json({ compact: true })
 				],
