@@ -356,6 +356,8 @@ async function build() {
         's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*(\'[@.][^)\\s]+)\\s*\\)\\.([a-zA-Z0-9]+);/import { \\3 as \\1 } from \\2;/g',
         '"'
     ].join('');
+    (0, core_1.info)('Converting CommonJS to ES modules via command:');
+    (0, core_1.info)(command);
     (0, child_process_1.execSync)(command);
     const { inputOptions, outputOptions } = config(target);
     try {
