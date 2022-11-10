@@ -42,10 +42,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: 'stdlib-js/assert-is-nan'
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 16
         timeout-minutes: 5
@@ -54,7 +54,7 @@ jobs:
         run: |
           npm install || npm install || npm install
       - name: Bundle `@stdlib/assert-is-nan`
-        uses: ./
+        uses: stdlib-js/bundle-action@main
         with:
           target: "deno"
 ```

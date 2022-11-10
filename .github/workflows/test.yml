@@ -72,7 +72,7 @@ jobs:
           minify: ${{ github.event.inputs.minify }}
       - uses: actions/upload-artifact@v3
         with:
-          name: bundle-artifact
+          name: ${{ github.event.inputs.target }}-bundle
           path: |
             umd/index.js
             umd/index.js.map
