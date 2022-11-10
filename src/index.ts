@@ -215,7 +215,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					}),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: false }), 
-					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }), 
+					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: 'preferred' }), 
 					insertNamedExports(),
 					json({ compact: true })
 				]
@@ -242,7 +242,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 						]
 					}),
 					nodeResolve({ preferBuiltins: false,  browser: false }), 
-					commonjs({ ignoreGlobal: false, transformMixedEsModules: true }), 
+					commonjs({ ignoreGlobal: false, transformMixedEsModules: true, requireReturnsDefault: 'preferred' }), 
 					insertNamedExports({ ignore: [ path.resolve( cwd, entryPoint ) ]}),
 					json({ compact: true })
 				],
@@ -269,7 +269,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					}),
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
-					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true }), 
+					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: 'preferred' }), 
 					insertNamedExports({ ignore: [ path.resolve( cwd, entryPoint ) ]}),
 					json({ compact: true })
 				]
@@ -296,7 +296,7 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 					esmPlugin, 
 					nodePolyfills({ include: null }), 
 					nodeResolve({ preferBuiltins: false, browser: true }), 
-					commonjs({ ignoreTryCatch: 'remove', transformMixedEsModules: true }), 
+					commonjs({ ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: 'preferred' }), 
 					insertNamedExports(),
 					json({ compact: true })
 				]
