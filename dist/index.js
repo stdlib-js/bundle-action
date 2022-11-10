@@ -347,6 +347,8 @@ async function build() {
         '"',
         's/module\\.exports\\s*=\\s*/export default /g',
         ';',
+        's/setReadOnly\\(\\s*([a-zA-Z0-9_]+)\\s*,\\s*\'setReadOnly\',\\s*require\\(\\s*\'([^\']+)\'\\s*\\)\\s*\\);/\\nsetReadOnly( \\1, \'setReadOnly\', setReadOnly );/g',
+        ';',
         's/setReadOnly\\(\\s*([a-zA-Z0-9_]+)\\s*,\\s*\'([a-zA-Z0-9_]+)\',\\s*require\\(\\s*\'([^\']+)\'\\s*\\)\\s*\\);/import \\2 from \'\\3\';\\nsetReadOnly( \\1, \'\\2\', \\2 );/g',
         ';',
         's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*(\'[@.][^)]+)\\s*\\);/import \\1 from \\2;/g',

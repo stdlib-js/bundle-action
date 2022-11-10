@@ -49,7 +49,7 @@ function pluginFactory({ ignore = [] } = {}) {
     * @returns transformed source or null if no transformation was performed
     */
     function transform(code, id) {
-        (0, core_1.info)(`Processing module with identifier ${id}...`);
+        (0, core_1.debug)(`Processing module with identifier ${id}...`);
         if (!SET_EXPORT_REGEX.test(code) && !EXPORTS_COMMENT_REGEX.test(code)) {
             return null;
         }
@@ -88,13 +88,8 @@ function pluginFactory({ ignore = [] } = {}) {
         * @returns matched string
         */
         function transformExport(str, namespace, exportName, identifier) {
-            (0, core_1.info)(`Transforming namespace export ${exportName}...`);
-            if (exportName === 'setReadOnly') {
-                exports.push(exportName);
-            }
-            else {
-                exports.push(identifier + ' as ' + exportName);
-            }
+            (0, core_1.debug)(`Transforming namespace export ${exportName}...`);
+            exports.push(identifier + ' as ' + exportName);
             return str;
         }
         /**
