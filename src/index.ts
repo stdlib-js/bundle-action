@@ -214,7 +214,6 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 						]
 					}),
 					nodePolyfills({ include: null }), 
-					nodeResolve({ preferBuiltins: false, browser: true, resolveOnly: module => module.includes( 'blas' ) }),
 					nodeResolve({ preferBuiltins: false, browser: false }), 
 					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: false }), 
 					insertNamedExports(),
@@ -242,7 +241,6 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 							{ find: 'readable-stream', replacement: 'stream' }
 						]
 					}),
-					nodeResolve({ preferBuiltins: false, browser: true, resolveOnly: module => module.includes( 'blas' ) }),
 					nodeResolve({ preferBuiltins: false,  browser: false }), 
 					commonjs({ ignoreGlobal: false, transformMixedEsModules: true, requireReturnsDefault: false }), 
 					insertNamedExports({ ignore: [ path.resolve( cwd, entryPoint ) ]}),
