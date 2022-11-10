@@ -86,7 +86,12 @@ function pluginFactory({ ignore = [] } = {}) {
         * @returns matched string
         */
         function transformExport(str, namespace, exportName, identifier) {
-            exports.push(identifier + ' as ' + exportName);
+            if (exportName === 'setReadOnly') {
+                exports.push(exportName);
+            }
+            else {
+                exports.push(identifier + ' as ' + exportName);
+            }
             return str;
         }
         /**
