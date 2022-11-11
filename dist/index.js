@@ -359,6 +359,17 @@ async function build() {
     (0, core_1.info)('Converting CommonJS to ES modules via command:');
     (0, core_1.info)(command);
     (0, child_process_1.execSync)(command);
+    const replaceNativeRequires = [
+        'find ./ -type f -name \'*.[jt]s\' \\( -not -path "./umd/**" -not -path "./esm/**" -not -path "./deno/**" -not -path "./node_modules/**" -o -path "./node_modules/@stdlib/*/lib/**" \\) -print0 ',
+        '| xargs -0 ',
+        'perl -0777 -i -pe ',
+        '"',
+        's/var join = require\\( \'path\' \\).join;\nvar tryRequire = require\\( \'\\@stdlib\\/utils-try-require\' \\);\\Rvar isError = require\\( \'\\@stdlib\\/assert-is-error\' \\);\\Rvar main = require\\( \'.\\/main.js\' \\);\\R\\R\\R\\/\\/ MAIN \\/\\/\\R\\Rvar (\\w+);\\Rvar tmp = tryRequire\\( join\\( __dirname, \'\\.\\/native.js\' \\) \\);\\Rif \\( isError\\( tmp \\) \\) {\\R\\t\\g1 = main;\\R} else {\\R\\t\\g1 = tmp;\\R}/var \\$1 = require( \'.\\/main.js\' );/g',
+        '"'
+    ].join('');
+    (0, core_1.info)('Replacing native requires via command:');
+    (0, core_1.info)(replaceNativeRequires);
+    (0, child_process_1.execSync)(replaceNativeRequires);
     const { inputOptions, outputOptions } = config(target);
     try {
         const bundle = await (0, rollup_1.rollup)(inputOptions);
