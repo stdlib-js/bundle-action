@@ -27,7 +27,7 @@ import axios from 'axios';
 import { getInput, setFailed, summary, info, warning } from '@actions/core';
 import { context } from '@actions/github';
 import { InputOptions, OutputOptions, rollup } from 'rollup';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 import aliasPlugin from '@rollup/plugin-alias';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import analyze from 'rollup-plugin-analyzer';
@@ -63,7 +63,7 @@ const esmPlugin =  {
 		if ( pkg.startsWith( '@stdlib' ) ) {
 			pkg = replace( pkg, '@stdlib/', '' ); // e.g., `@stdlib/math/base` -> `math/base`
 			pkg = replace( pkg, '/', '-' ); // e.g., `math/base/special/gamma` -> `math-base-special-gamma`
-			const slug = 'stdlib-js/' + pkg;	
+			const slug = 'stdlib-js/' + pkg;
 			if ( !( slug in TAG_FOR_SLUG ) ) {
 				// Make request to GitHub API to get the latest tag for the specified package:
 				try {
@@ -83,7 +83,7 @@ const esmPlugin =  {
 				info( `Resolved latest ESM tag for package "${pkg}" to "${tag.name}".` );
 				version = '@' + tag.name;
 			}
-			const url = 'https://cdn.jsdelivr.net/gh/' + slug + version + '/index.mjs';			
+			const url = 'https://cdn.jsdelivr.net/gh/' + slug + version + '/index.mjs';
 			return {
 				id: url,
 				external: true
@@ -136,7 +136,7 @@ async function onAnalysis( res: any ) {
 	const piechart = [
 		'pie title Rollup Bundle Modules'
 	];
-	const table = [	
+	const table = [
 		[
 			{
 				data: 'ID', header: true
@@ -193,7 +193,7 @@ async function onAnalysis( res: any ) {
 }
 
 /**
-* Returns rollup input and output options for a given target. 
+* Returns rollup input and output options for a given target.
 *
 * @private
 * @param {string} target - build target (`deno`, `umd`, or `esm`)
@@ -206,16 +206,16 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 		case 'deno':
 			inputOptions = {
 				input: entryPoint,
-				plugins: [ 
+				plugins: [
 					shim( generalShims ),
 					aliasPlugin({
 						entries: [
 							{ find: 'readable-stream', replacement: 'stream' }
 						]
 					}),
-					nodePolyfills({ include: null }), 
-					nodeResolve({ preferBuiltins: false, browser: false }), 
-					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: false }), 
+					nodePolyfills({ include: null }),
+					nodeResolve({ preferBuiltins: false, browser: false }),
+					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: false }),
 					insertNamedExports(),
 					json({ compact: true })
 				]
@@ -234,15 +234,15 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 		case 'umd-node':
 			inputOptions = {
 				input: entryPoint,
-				plugins: [ 
+				plugins: [
 					shim( generalShims ),
 					aliasPlugin({
 						entries: [
 							{ find: 'readable-stream', replacement: 'stream' }
 						]
 					}),
-					nodeResolve({ preferBuiltins: false,  browser: false }), 
-					commonjs({ ignoreGlobal: false, transformMixedEsModules: true, requireReturnsDefault: false }), 
+					nodeResolve({ preferBuiltins: false,  browser: false }),
+					commonjs({ ignoreGlobal: false, transformMixedEsModules: true, requireReturnsDefault: false }),
 					insertNamedExports({ ignore: [ path.resolve( cwd, entryPoint ) ]}),
 					json({ compact: true })
 				],
@@ -260,16 +260,16 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 		case 'umd-browser':
 			inputOptions = {
 				input: entryPoint,
-				plugins: [ 
+				plugins: [
 					shim({ ...generalShims, ...browserShims }),
 					aliasPlugin({
 						entries: [
 							{ find: 'readable-stream', replacement: 'stream' }
 						]
 					}),
-					nodePolyfills({ include: null }), 
-					nodeResolve({ preferBuiltins: false, browser: true }), 
-					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: false }), 
+					nodePolyfills({ include: null }),
+					nodeResolve({ preferBuiltins: false, browser: true }),
+					commonjs({ ignoreGlobal: false, ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: false }),
 					insertNamedExports({ ignore: [ path.resolve( cwd, entryPoint ) ]}),
 					json({ compact: true })
 				]
@@ -286,17 +286,17 @@ function config( target: string ): { inputOptions: InputOptions, outputOptions: 
 		case 'esm':
 			inputOptions = {
 				input: entryPoint,
-				plugins: [ 
+				plugins: [
 					shim({ ...generalShims, ...browserShims }),
 					aliasPlugin({
 						entries: [
 							{ find: 'readable-stream', replacement: 'stream' }
 						]
 					}),
-					esmPlugin, 
-					nodePolyfills({ include: null }), 
-					nodeResolve({ preferBuiltins: false, browser: true }), 
-					commonjs({ ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: false }), 
+					esmPlugin,
+					nodePolyfills({ include: null }),
+					nodeResolve({ preferBuiltins: false, browser: true }),
+					commonjs({ ignoreTryCatch: 'remove', transformMixedEsModules: true, requireReturnsDefault: false }),
 					insertNamedExports(),
 					json({ compact: true })
 				]
@@ -365,14 +365,14 @@ async function build(): Promise<void> {
 	info( 'Converting CommonJS to ES modules via command:' );
 	info( command );
 	shell( command );
-	
+
 	const replaceNativeRequires = [
 		'find ./ -type f -name \'index.js\' \\( -not -path "./umd/**" -not -path "./esm/**" -not -path "./deno/**" -not -path "./node_modules/**" -o -path "./node_modules/@stdlib/*/lib/**" \\) -print0 ', // Find JavaScript and TypeScript files print their full names to standard output...
 		'| xargs -0 ', // Convert standard input to the arguments for following command...
 		'perl -0777 -i -pe ',  // Edit files in-place without creating a backup...
 		'"',
 		's/var join = require\\( \'path\' \\).join;\\Rvar tryRequire = require\\( \'\\@stdlib\\/utils.try-require\' \\);\\Rvar isError = require\\( \'\\@stdlib\\/assert.is-error\' \\);\\Rvar main = require\\( \'.\\/main.js\' \\);\\R\\R\\R\\/\\/ MAIN \\/\\/\\R\\Rvar (\\w+);\\Rvar tmp = tryRequire\\( join\\( __dirname, \'\\.\\/native.js\' \\) \\);\\Rif \\( isError\\( tmp \\) \\) {\\R\\t\\g1 = main;\\R} else {\\R\\t\\g1 = tmp;\\R}/var \\$1 = require( \'.\\/main.js\' );/g', // Replace trying to require native modules with the main JavaScript module...
-		'"' 
+		'"'
 	].join( '' );
 	info( 'Replacing native requires via command:' );
 	info( replaceNativeRequires );

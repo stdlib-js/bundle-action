@@ -30,7 +30,7 @@ const axios_1 = __importDefault(require("axios"));
 const core_1 = require("@actions/core");
 const github_1 = require("@actions/github");
 const rollup_1 = require("rollup");
-const rollup_plugin_terser_1 = require("rollup-plugin-terser");
+const plugin_terser_1 = __importDefault(require("@rollup/plugin-terser"));
 const plugin_alias_1 = __importDefault(require("@rollup/plugin-alias"));
 const plugin_node_resolve_1 = require("@rollup/plugin-node-resolve");
 const rollup_plugin_analyzer_1 = __importDefault(require("rollup-plugin-analyzer"));
@@ -314,7 +314,7 @@ function config(target) {
     }
     inputOptions.preserveEntrySignatures = 'strict';
     if (minify) {
-        inputOptions.plugins.push((0, rollup_plugin_terser_1.terser)(terserOptions));
+        inputOptions.plugins.push((0, plugin_terser_1.default)(terserOptions));
     }
     switch (target) {
         case 'deno':
@@ -341,15 +341,15 @@ function config(target) {
 */
 async function build() {
     const command = [
-        'find ./ -type f -name \'*.[jt]s\' \\( -not -path "./umd/**" -not -path "./esm/**" -not -path "./deno/**" -not -path "./node_modules/**" -o -path "./node_modules/@stdlib/*/lib/**" \\) -print0 ',
-        '| xargs -0 ',
-        'sed -Ei ',
+        'find ./ -type f -name \'*.[jt]s\' \\( -not -path "./umd/**" -not -path "./esm/**" -not -path "./deno/**" -not -path "./node_modules/**" -o -path "./node_modules/@stdlib/*/lib/**" \\) -print0 ', // Find JavaScript and TypeScript files print their full names to standard output...
+        '| xargs -0 ', // Convert standard input to the arguments for following command...
+        'sed -Ei ', // Edit files in-place without creating a backup...
         '"',
-        's/module\\.exports\\s*=\\s*/export default /g',
+        's/module\\.exports\\s*=\\s*/export default /g', // Replace `module.exports =` with `export default`...
         ';',
-        's/setReadOnly\\(\\s*([a-zA-Z0-9_]+)\\s*,\\s*\'setReadOnly\',\\s*require\\(\\s*\'([^\']+)\'\\s*\\)\\s*\\);/\\nsetReadOnly( \\1, \'setReadOnly\', setReadOnly );/g',
+        's/setReadOnly\\(\\s*([a-zA-Z0-9_]+)\\s*,\\s*\'setReadOnly\',\\s*require\\(\\s*\'([^\']+)\'\\s*\\)\\s*\\);/\\nsetReadOnly( \\1, \'setReadOnly\', setReadOnly );/g', // Handle `setReadOnly` first...
         ';',
-        's/setReadOnly\\(\\s*([a-zA-Z0-9_]+)\\s*,\\s*\'([a-zA-Z0-9_]+)\',\\s*require\\(\\s*\'([^\']+)\'\\s*\\)\\s*\\);/import \\2 from \'\\3\';\\nsetReadOnly( \\1, \'\\2\', \\2 );/g',
+        's/setReadOnly\\(\\s*([a-zA-Z0-9_]+)\\s*,\\s*\'([a-zA-Z0-9_]+)\',\\s*require\\(\\s*\'([^\']+)\'\\s*\\)\\s*\\);/import \\2 from \'\\3\';\\nsetReadOnly( \\1, \'\\2\', \\2 );/g', // Replace `setReadOnly( foo, 'bar', require( 'baz' ) );` with `import bar from 'baz';\nsetReadOnly( foo, 'bar', bar );`...
         ';',
         's/var\\s+([a-zA-Z0-9_]+)\\s*=\\s*require\\(\\s*(\'[@.][^) ]+)\\s*\\);/import \\1 from \\2;/g',
         ';',
@@ -360,11 +360,11 @@ async function build() {
     (0, core_1.info)(command);
     (0, child_process_1.execSync)(command);
     const replaceNativeRequires = [
-        'find ./ -type f -name \'index.js\' \\( -not -path "./umd/**" -not -path "./esm/**" -not -path "./deno/**" -not -path "./node_modules/**" -o -path "./node_modules/@stdlib/*/lib/**" \\) -print0 ',
-        '| xargs -0 ',
-        'perl -0777 -i -pe ',
+        'find ./ -type f -name \'index.js\' \\( -not -path "./umd/**" -not -path "./esm/**" -not -path "./deno/**" -not -path "./node_modules/**" -o -path "./node_modules/@stdlib/*/lib/**" \\) -print0 ', // Find JavaScript and TypeScript files print their full names to standard output...
+        '| xargs -0 ', // Convert standard input to the arguments for following command...
+        'perl -0777 -i -pe ', // Edit files in-place without creating a backup...
         '"',
-        's/var join = require\\( \'path\' \\).join;\\Rvar tryRequire = require\\( \'\\@stdlib\\/utils.try-require\' \\);\\Rvar isError = require\\( \'\\@stdlib\\/assert.is-error\' \\);\\Rvar main = require\\( \'.\\/main.js\' \\);\\R\\R\\R\\/\\/ MAIN \\/\\/\\R\\Rvar (\\w+);\\Rvar tmp = tryRequire\\( join\\( __dirname, \'\\.\\/native.js\' \\) \\);\\Rif \\( isError\\( tmp \\) \\) {\\R\\t\\g1 = main;\\R} else {\\R\\t\\g1 = tmp;\\R}/var \\$1 = require( \'.\\/main.js\' );/g',
+        's/var join = require\\( \'path\' \\).join;\\Rvar tryRequire = require\\( \'\\@stdlib\\/utils.try-require\' \\);\\Rvar isError = require\\( \'\\@stdlib\\/assert.is-error\' \\);\\Rvar main = require\\( \'.\\/main.js\' \\);\\R\\R\\R\\/\\/ MAIN \\/\\/\\R\\Rvar (\\w+);\\Rvar tmp = tryRequire\\( join\\( __dirname, \'\\.\\/native.js\' \\) \\);\\Rif \\( isError\\( tmp \\) \\) {\\R\\t\\g1 = main;\\R} else {\\R\\t\\g1 = tmp;\\R}/var \\$1 = require( \'.\\/main.js\' );/g', // Replace trying to require native modules with the main JavaScript module...
         '"'
     ].join('');
     (0, core_1.info)('Replacing native requires via command:');
