@@ -132,7 +132,7 @@ if ( !entryPoint ) {
 * @private
 * @param {Object} res - analysis results
 */
-async function onAnalysis( res: any ) {
+async function onAnalysis( res: any ) { // eslint-disable-line @typescript-eslint/no-explicit-any
 	const piechart = [
 		'pie title Rollup Bundle Modules'
 	];

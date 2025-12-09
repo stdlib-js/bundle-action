@@ -28,6 +28,7 @@ const string_replace_1 = __importDefault(require("@stdlib/string-replace"));
 const SET_EXPORT_REGEX = /^setReadOnly\s*\(\s*(\w+)\s*,\s*['"](\w+)['"]\s*,\s*([A-Za-z_$][\w$]*)\s*\)\s*;\s*$/mg;
 const EXPORTS_COMMENT_REGEX = /^\s*\/\/\s*exports:\s*(\{[^}]*\})\s*$/m;
 const EXPORT_DEFAULT_REGEX = /^export\s+default\s+(\w+)\s*;?\s*$/m;
+const IMPORT_REGEX = /^import\s+(\w+)\s+from\s+/mg;
 // MAIN //
 /**
 * Returns a plugin to transform CommonJS require statements to ES module imports.
@@ -65,6 +66,13 @@ function pluginFactory({ ignore = [] } = {}) {
         // Detect the default export identifier (e.g., `export default main` -> "main"):
         const defaultExportMatch = code.match(EXPORT_DEFAULT_REGEX);
         const defaultExportName = defaultExportMatch ? defaultExportMatch[1] : null;
+        // Collect all imported identifiers to avoid re-declaring them:
+        const importedIdentifiers = new Set();
+        let importMatch;
+        while ((importMatch = IMPORT_REGEX.exec(code)) !== null) {
+            importedIdentifiers.add(importMatch[1]);
+        }
+        IMPORT_REGEX.lastIndex = 0;
         const destructured = [];
         const exports = [];
         const magicString = new magic_string_1.default(code);
@@ -79,8 +87,8 @@ function pluginFactory({ ignore = [] } = {}) {
             magicString.append('\n' + destructured.join('\n'));
             changed = true;
         }
-        else if (exports.length > 0) {
-            magicString.append('\nexport { ' + exports.join(', ') + '};');
+        if (exports.length > 0) {
+            magicString.append('\nexport { ' + exports.join(', ') + ' };');
             changed = true;
         }
         if (!changed) {
@@ -121,8 +129,14 @@ function pluginFactory({ ignore = [] } = {}) {
             for (const key in parsed) {
                 const value = parsed[key];
                 if (typeof value === 'string' && value.includes('.')) {
-                    const [main, name] = value.split('.');
-                    destructured.push(`export const { ${name}: ${key} } = ${main};`);
+                    const [obj, name] = value.split('.');
+                    // If the export name matches an already-imported identifier, re-export it directly:
+                    if (importedIdentifiers.has(key)) {
+                        exports.push(key);
+                    }
+                    else {
+                        destructured.push(`export const { ${name}: ${key} } = ${obj};`);
+                    }
                 }
             }
             return str;
