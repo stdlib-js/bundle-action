@@ -27,6 +27,7 @@ const string_replace_1 = __importDefault(require("@stdlib/string-replace"));
 // VARIABLES //
 const SET_EXPORT_REGEX = /^setReadOnly\s*\(\s*(\w+)\s*,\s*['"](\w+)['"]\s*,\s*([A-Za-z_$][\w$]*)\s*\)\s*;\s*$/mg;
 const EXPORTS_COMMENT_REGEX = /^\s*\/\/\s*exports:\s*(\{[^}]*\})\s*$/m;
+const EXPORT_DEFAULT_REGEX = /^export\s+default\s+(\w+)\s*;?\s*$/m;
 // MAIN //
 /**
 * Returns a plugin to transform CommonJS require statements to ES module imports.
@@ -50,24 +51,36 @@ function pluginFactory({ ignore = [] } = {}) {
     */
     function transform(code, id) {
         (0, core_1.debug)(`Processing module with identifier ${id}...`);
-        if (!SET_EXPORT_REGEX.test(code) && !EXPORTS_COMMENT_REGEX.test(code)) {
+        // Check for explicit exports comment first (authoritative when present):
+        const hasExportsComment = EXPORTS_COMMENT_REGEX.test(code);
+        const hasSetReadOnly = SET_EXPORT_REGEX.test(code);
+        // Reset lastIndex after test() calls with global regex:
+        SET_EXPORT_REGEX.lastIndex = 0;
+        if (!hasSetReadOnly && !hasExportsComment) {
             return null;
         }
         if (ignore.includes(id)) {
             return null;
         }
+        // Detect the default export identifier (e.g., `export default main` -> "main"):
+        const defaultExportMatch = code.match(EXPORT_DEFAULT_REGEX);
+        const defaultExportName = defaultExportMatch ? defaultExportMatch[1] : null;
         const destructured = [];
         const exports = [];
         const magicString = new magic_string_1.default(code);
-        (0, string_replace_1.default)(code, SET_EXPORT_REGEX, transformExport);
-        (0, string_replace_1.default)(code, EXPORTS_COMMENT_REGEX, transformExportsComment);
+        if (hasExportsComment) {
+            (0, string_replace_1.default)(code, EXPORTS_COMMENT_REGEX, transformExportsComment);
+        }
+        else {
+            (0, string_replace_1.default)(code, SET_EXPORT_REGEX, transformExport);
+        }
         let changed = false;
-        if (exports.length > 0) {
-            magicString.append('\nexport { ' + exports.join(', ') + '};');
+        if (destructured.length > 0) {
+            magicString.append('\n' + destructured.join('\n'));
             changed = true;
         }
-        else if (destructured.length > 0) {
-            magicString.append('\n' + destructured.join('\n'));
+        else if (exports.length > 0) {
+            magicString.append('\nexport { ' + exports.join(', ') + '};');
             changed = true;
         }
         if (!changed) {
@@ -82,12 +95,15 @@ function pluginFactory({ ignore = [] } = {}) {
         *
         * @private
         * @param str - matched string
-        * @param namespace - package namespace
+        * @param namespace - the object being modified (first arg to setReadOnly)
         * @param exportName - exported name
         * @param identifier - exported identifier
         * @returns matched string
         */
         function transformExport(str, namespace, exportName, identifier) {
+            if (defaultExportName && namespace !== defaultExportName) {
+                return str;
+            }
             (0, core_1.debug)(`Transforming namespace export ${exportName}...`);
             exports.push(identifier + ' as ' + exportName);
             return str;
