@@ -1,3 +1,4 @@
 {
-    "@stdlib/assert-has-node-buffer-support": "export default () => false"
+    "@stdlib/assert-has-node-buffer-support": "export default () => false",
+    "console": "export default globalThis.console;"
 }
